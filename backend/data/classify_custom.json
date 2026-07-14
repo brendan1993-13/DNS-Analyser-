@@ -268,5 +268,15 @@
     "bg": true,
     "source": "urlscan.io",
     "researched": "2026-07-13T09:15:04.171Z"
+  },
+  "stripchats.app": {
+    "cat": "Infrastructure / CDN",
+    "owner": "CLOUDFLARENET - Cloudflare, Inc., US",
+    "purpose": "casting video",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "urlscan.io",
+    "researched": "2026-07-14T20:26:30.636Z"
   }
 }
