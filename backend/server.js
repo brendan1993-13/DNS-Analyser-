@@ -633,4 +633,21 @@ app.get('/api/detectedapps', (req, res) => {
 
 app.get('/api/meta-realtime', (req, res) => { res.json(metaRealtimeActivity(db)); });
 
+
+// ---- AI chat over the logs (text-to-SQL, PIN-gated) ----
+const { ask: chatAsk } = require('./chat');
+const CHAT_PIN = '4269'; // change to your own PIN
+app.post('/api/chat', async (req, res) => {
+  try {
+    const pin = (req.body && req.body.pin) || '';
+    if (pin !== CHAT_PIN) return res.status(401).json({ error: 'Incorrect PIN.' });
+    const question = (req.body && req.body.question) || '';
+    if (!question.trim()) return res.status(400).json({ error: 'Ask a question.' });
+    const result = await chatAsk(question);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: (e && e.message) || 'Chat failed.' });
+  }
+});
+
 app.listen(PORT, () => console.log(`DNS Analyser running on port ${PORT}`));
