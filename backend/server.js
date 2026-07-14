@@ -651,8 +651,6 @@ const { ask: chatAsk } = require('./chat');
 const CHAT_PIN = '4269'; // change to your own PIN
 app.post('/api/chat', async (req, res) => {
   try {
-    const pin = (req.body && req.body.pin) || '';
-    if (pin !== CHAT_PIN) return res.status(401).json({ error: 'Incorrect PIN.' });
     const question = (req.body && req.body.question) || '';
     if (!question.trim()) return res.status(400).json({ error: 'Ask a question.' });
     const result = await chatAsk(question);

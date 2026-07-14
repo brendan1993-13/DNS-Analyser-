@@ -271,8 +271,6 @@ tr.expanded-row td { background: #142030; }
       Ask anything about your logs in plain English — usage, stats, patterns, blocked domains, devices, times of day. Answers are generated live from your data.
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <input id="chatPin" type="password" placeholder="PIN" autocomplete="off"
-        style="width:120px;padding:9px 12px;background:#0E1826;border:1px solid #24425F;border-radius:8px;color:#DCE7F0;font-size:14px">
       <textarea id="chatQ" rows="3" placeholder="e.g. Which sites did my phone visit most at night last week?"
         style="width:100%;padding:11px 13px;background:#0E1826;border:1px solid #24425F;border-radius:8px;color:#DCE7F0;font-size:14px;resize:vertical;box-sizing:border-box"></textarea>
       <button class="btn btn-primary" onclick="askChat()" id="chatBtn" style="width:fit-content">Ask</button>
@@ -735,8 +733,7 @@ function toggleExpand(el, row) {
 // ─── TAB NAVIGATION ──────────────────────────────────────────────────────────
 const tabLoaded = {};
 async function askChat() {
-  const pin = document.getElementById('chatPin').value.trim();
-  const q = document.getElementById('chatQ').value.trim();
+    const q = document.getElementById('chatQ').value.trim();
   const out = document.getElementById('chatOut');
   const btn = document.getElementById('chatBtn');
   if (!q) { out.innerHTML = '<div style="color:#E5A0A0">Type a question first.</div>'; return; }
@@ -745,7 +742,7 @@ async function askChat() {
   try {
     const res = await fetch('/api/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ pin, question: q })
+      body: JSON.stringify({ question: q })
     });
     const d = await res.json();
     if (!res.ok) {
