@@ -51,9 +51,21 @@ function loadConfig() { try { return JSON.parse(fs.readFileSync(CONFIG_FILE,'utf
 function saveConfig(cfg) { fs.writeFileSync(CONFIG_FILE, JSON.stringify(cfg)); }
 function getLastTs() { return db.prepare('SELECT MAX(timestamp) as ts FROM logs').get()?.ts || ''; }
 
+function classifyRow(r) {
+  const gk = classify.groupKey ? classify.groupKey(r.domain||'', r.root_domain||'') : (r.root_domain||'');
+  const info = classify(gk||'');
+  let service = null;
+  try { service = parentService(gk) || parentService(r.root_domain||'') || null; } catch(e) {}
+  return {
+    category: info.cat,
+    risk: info.risk==='H'?'High':info.risk==='M'?'Medium':'Low',
+    owner: info.owner,
+    service
+  };
+}
 function insertRows(rows) {
-  const ins = db.prepare(`INSERT INTO logs (timestamp,domain,root_domain,query_type,protocol,client_ip,status,reasons,destination_country,device_name) VALUES (@timestamp,@domain,@root_domain,@query_type,@protocol,@client_ip,@status,@reasons,@destination_country,@device_name)`);
-  db.transaction((rows) => { for (const r of rows) ins.run({timestamp:r.timestamp||'',domain:r.domain||'',root_domain:r.root_domain||'',query_type:r.query_type||'',protocol:r.protocol||'',client_ip:r.client_ip||'',status:r.status||'',reasons:r.reasons||'',destination_country:r.destination_country||'',device_name:r.device_name||r.device_model||''}); })(rows);
+  const ins = db.prepare(`INSERT INTO logs (timestamp,domain,root_domain,query_type,protocol,client_ip,status,reasons,destination_country,device_name,category,risk,owner,service) VALUES (@timestamp,@domain,@root_domain,@query_type,@protocol,@client_ip,@status,@reasons,@destination_country,@device_name,@category,@risk,@owner,@service)`);
+  db.transaction((rows) => { for (const r of rows) { const c = classifyRow(r); ins.run({timestamp:r.timestamp||'',domain:r.domain||'',root_domain:r.root_domain||'',query_type:r.query_type||'',protocol:r.protocol||'',client_ip:r.client_ip||'',status:r.status||'',reasons:r.reasons||'',destination_country:r.destination_country||'',device_name:r.device_name||r.device_model||'',category:c.category,risk:c.risk,owner:c.owner,service:c.service}); } })(rows);
 }
 
 function parseCSV(text) {
