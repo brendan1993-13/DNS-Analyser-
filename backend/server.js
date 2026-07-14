@@ -164,7 +164,7 @@ app.get('/api/rows', (req, res) => {
   const tab = req.query.tab||'all';
   let where = '1=1';
   const params = {};
-  if (q) { where += " AND (root_domain LIKE @q OR domain LIKE @q)"; params.q = `%${q}%`; }
+  if (q) { where += " AND (root_domain LIKE @q OR domain LIKE @q OR category LIKE @q OR service LIKE @q OR device_name LIKE @q OR destination_country LIKE @q OR status LIKE @q OR owner LIKE @q)"; params.q = `%${q}%`; }
   if (tab === 'blocked') where += " AND status='blocked'";
   const total = db.prepare(`SELECT COUNT(*) as n FROM logs WHERE ${where}`).get(params).n;
   const rawRows = db.prepare(`SELECT * FROM logs WHERE ${where} ORDER BY timestamp DESC LIMIT ${limit} OFFSET ${page*limit}`).all(params);
