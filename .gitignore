@@ -1,0 +1,6 @@
+backend/node_modules/
+backend/data/dns.db
+backend/data/config.json
+backend/data/*.json.bak
+*.log
+backend/data/rows.json

@@ -1,0 +1,90 @@
+[
+  {
+    "domain": "cashtrain.com.au",
+    "from": "Unknown",
+    "to": "Finance / Banking",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:19:40.533Z"
+  },
+  {
+    "domain": "liadm.com",
+    "from": "Infrastructure / CDN",
+    "to": "Advertising / Ad Tech",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:35:31.546Z"
+  },
+  {
+    "domain": "usbrowserspeed.com",
+    "from": "Infrastructure / CDN",
+    "to": "Advertising / Ad Tech",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:36:36.916Z"
+  },
+  {
+    "domain": "hometalk.com",
+    "from": "Finance / Banking",
+    "to": "Productivity / Cloud",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:38:14.921Z"
+  },
+  {
+    "domain": "redesigndaily.com",
+    "from": "Unknown",
+    "to": "Productivity / Cloud",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:39:03.863Z"
+  },
+  {
+    "domain": "sirv.com",
+    "from": "Unknown",
+    "to": "Infrastructure / CDN",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-10T03:45:05.272Z"
+  },
+  {
+    "domain": "content-storage-download.googleapis.com",
+    "from": "Infrastructure / CDN",
+    "to": "Malicious / Threat",
+    "reason": "VirusTotal categorises as Malicious / Threat",
+    "force": true,
+    "at": "2026-07-11T03:43:59.669Z"
+  },
+  {
+    "domain": "dashapi.com",
+    "from": "Unknown",
+    "to": "Productivity / Cloud",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-12T03:10:11.738Z"
+  },
+  {
+    "domain": "youtube.com",
+    "from": "Entertainment / Streaming",
+    "to": "Adult Content",
+    "reason": "VirusTotal categorises as Adult Content",
+    "force": true,
+    "at": "2026-07-12T03:51:13.039Z"
+  },
+  {
+    "domain": "awstrack.me",
+    "from": "Unknown",
+    "to": "Infrastructure / CDN",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-13T03:44:01.711Z"
+  },
+  {
+    "domain": "nagich.com",
+    "from": "Infrastructure / CDN",
+    "to": "Health",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-13T03:47:18.907Z"
+  }
+]

@@ -1,0 +1,112 @@
+{
+  "cashtrain.com.au": {
+    "cat": "Finance / Banking",
+    "owner": "MICROSOFT-CORP-MSN-AS-BLOCK - Microsoft Corporation, US",
+    "purpose": "VirusTotal category: Finance (alphaMountain.ai)",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:19:40.532Z"
+  },
+  "liadm.com": {
+    "cat": "Advertising / Ad Tech",
+    "owner": "CLOUDFLARESPECTRUM Cloudflare London, LLC, US",
+    "purpose": "Stop Screen-Hopping. Start Winning More Orders.",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:35:31.546Z"
+  },
+  "usbrowserspeed.com": {
+    "cat": "Advertising / Ad Tech",
+    "owner": "CLOUDFLARESPECTRUM Cloudflare London, LLC, US",
+    "purpose": "Employer of Record (EoR) Services | Global Expansion",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:36:36.916Z"
+  },
+  "hometalk.com": {
+    "cat": "Productivity / Cloud",
+    "owner": "FASTLY - Fastly, Inc., US",
+    "purpose": "migros bank unsecured loan 2026 guide early payoff options",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "M",
+    "bg": false,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:38:14.921Z"
+  },
+  "redesigndaily.com": {
+    "cat": "Productivity / Cloud",
+    "owner": "FASTLY - Fastly, Inc., US",
+    "purpose": "VirusTotal category: business, blogs & wikis",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:39:03.863Z"
+  },
+  "sirv.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "FASTLY - Fastly, Inc., US",
+    "purpose": "VirusTotal category: Information Technology (alphaMountain.ai), computersandsoftware",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-10T03:45:05.272Z"
+  },
+  "content-storage-download.googleapis.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Google LLC",
+    "purpose": "Google Content Storage — file downloads from Google services",
+    "data": "File access logs",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-11T03:43:59.669Z"
+  },
+  "dashapi.com": {
+    "cat": "Productivity / Cloud",
+    "owner": "AMAZON-02 - Amazon.com, Inc., US",
+    "purpose": "VirusTotal category: business and economy",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-12T03:10:11.738Z"
+  },
+  "youtube.com": {
+    "cat": "Entertainment / Streaming",
+    "owner": "Google LLC",
+    "purpose": "YouTube — videos, subscriptions, Premium, Shorts, Music",
+    "data": "Viewing history, search queries, comments",
+    "risk": "M",
+    "bg": false,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-12T03:51:13.039Z"
+  },
+  "awstrack.me": {
+    "cat": "Infrastructure / CDN",
+    "owner": "AS269954 - UNIDAD ADMINISTRATIVA ESPECIAL DIRECCION DE IMPUESTOS Y ADUANAS NACIONALES, CO",
+    "purpose": "VirusTotal category: trackers, information technology",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-13T03:44:01.711Z"
+  },
+  "nagich.com": {
+    "cat": "Health",
+    "owner": "CLOUDFLARENET - Cloudflare, Inc., US",
+    "purpose": "Genuine Innovations - CO2 Bicycle Tire Inflation",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-13T03:47:18.907Z"
+  }
+}

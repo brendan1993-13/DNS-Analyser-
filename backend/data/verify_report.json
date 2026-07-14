@@ -1,0 +1,485 @@
+{
+  "checked": 200,
+  "agreements": 42,
+  "mismatches": [
+    {
+      "domain": "cloud.microsoft",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "collaboration - office"
+      ],
+      "visits": 16191
+    },
+    {
+      "domain": "apple.com",
+      "ours": "Apple Services",
+      "virustotal": "Shopping / Retail",
+      "vtRaw": [
+        "Business/Economy, Information Technology, Shopping (alphaMountain.ai)",
+        "jobsearch",
+        "information technology"
+      ],
+      "visits": 57662
+    },
+    {
+      "domain": "aaplimg.com",
+      "ours": "Media Delivery",
+      "virustotal": "Shopping / Retail",
+      "vtRaw": [
+        "information technology",
+        "content delivery",
+        "computing & technology"
+      ],
+      "visits": 21609
+    },
+    {
+      "domain": "tm-azurefd.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "general business",
+        "information technology",
+        "technology"
+      ],
+      "visits": 133
+    },
+    {
+      "domain": "office.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "collaboration - office"
+      ],
+      "visits": 8838
+    },
+    {
+      "domain": "apple-dns.net",
+      "ours": "Apple Services",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "information technology",
+        "information technology"
+      ],
+      "visits": 22909
+    },
+    {
+      "domain": "outlook.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Messaging / Communication",
+      "vtRaw": [
+        "webmail",
+        "web e mail",
+        "general email"
+      ],
+      "visits": 15744
+    },
+    {
+      "domain": "aadg.akadns.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Content Servers (alphaMountain.ai)",
+        "content delivery",
+        "web infrastructure"
+      ],
+      "visits": 1515
+    },
+    {
+      "domain": "ln-msedge.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "information technology",
+        "Information Technology (alphaMountain.ai)"
+      ],
+      "visits": 387
+    },
+    {
+      "domain": "microsoftonline.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "web applications",
+        "information technology"
+      ],
+      "visits": 2418
+    },
+    {
+      "domain": "google.com",
+      "ours": "Search / Google",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "hosted business applications"
+      ],
+      "visits": 5629
+    },
+    {
+      "domain": "amp-endpoint2.com",
+      "ours": "Apple Services",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Content Servers (alphaMountain.ai)",
+        "general business",
+        "web infrastructure"
+      ],
+      "visits": 848
+    },
+    {
+      "domain": "msidentity.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computing & technology",
+        "information technology",
+        "collaboration - office"
+      ],
+      "visits": 800
+    },
+    {
+      "domain": "office.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "collaboration - office"
+      ],
+      "visits": 527
+    },
+    {
+      "domain": "live.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "webmail",
+        "information technology",
+        "collaboration - office"
+      ],
+      "visits": 832
+    },
+    {
+      "domain": "com.trafficmanager.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "information technology",
+        "information technology",
+        "technology"
+      ],
+      "visits": 322
+    },
+    {
+      "domain": "cdn-apple.com",
+      "ours": "Media Delivery",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 1526
+    },
+    {
+      "domain": "aadg.trafficmanager.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "information technology",
+        "information technology"
+      ],
+      "visits": 546
+    },
+    {
+      "domain": "msn.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "News / Media",
+      "vtRaw": [
+        "news",
+        "portal sites",
+        "search engines and portals"
+      ],
+      "visits": 61
+    },
+    {
+      "domain": "firebaselogging-pa.googleapis.com",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Advertising / Ad Tech",
+      "vtRaw": [
+        "Ads/Analytics, Information Technology (alphaMountain.ai)",
+        "trackers",
+        "information technology"
+      ],
+      "visits": 618
+    },
+    {
+      "domain": "bom.gov.au",
+      "ours": "Government",
+      "virustotal": "News / Media",
+      "vtRaw": [
+        "news",
+        "government",
+        "government"
+      ],
+      "visits": 80
+    },
+    {
+      "domain": "firebaseremoteconfigrealtime.googleapis.com",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Information Technology (alphaMountain.ai)"
+      ],
+      "visits": 218
+    },
+    {
+      "domain": "office365.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Email (alphaMountain.ai)",
+        "webmail",
+        "web e mail"
+      ],
+      "visits": 390
+    },
+    {
+      "domain": "tuyaeu.com",
+      "ours": "Smart Home",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Content Servers (alphaMountain.ai)",
+        "parked",
+        "content delivery"
+      ],
+      "visits": 4781
+    },
+    {
+      "domain": "gigya.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "computing & technology",
+        "information technology"
+      ],
+      "visits": 109
+    },
+    {
+      "domain": "scdn.co",
+      "ours": "Media Delivery",
+      "virustotal": "Entertainment / Streaming",
+      "vtRaw": [
+        "Content Servers (alphaMountain.ai)",
+        "streaming media",
+        "information technology"
+      ],
+      "visits": 556
+    },
+    {
+      "domain": "microsoft.com",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "computing & technology",
+        "information technology"
+      ],
+      "visits": 716
+    },
+    {
+      "domain": "t-s1-msedge.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Information Technology (alphaMountain.ai)",
+        "information technology",
+        "technology"
+      ],
+      "visits": 23
+    },
+    {
+      "domain": "smart321.com",
+      "ours": "Smart Home",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Information Technology (alphaMountain.ai)"
+      ],
+      "visits": 356
+    },
+    {
+      "domain": "tanda.co",
+      "ours": "Work / Employment",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 177
+    },
+    {
+      "domain": "icloud-content.com",
+      "ours": "Media Delivery",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "business",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 676
+    },
+    {
+      "domain": "bing.com",
+      "ours": "Search / Google",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "searchengines",
+        "search engines",
+        "search engines and portals"
+      ],
+      "visits": 212
+    },
+    {
+      "domain": "ax-msedge.net",
+      "ours": "Productivity / Cloud",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Information Technology (alphaMountain.ai)",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 106
+    },
+    {
+      "domain": "hrblock-website-1497593097333.ts.r.appspot.com",
+      "ours": "Finance / Banking",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "information technology",
+        "information technology"
+      ],
+      "visits": 12
+    },
+    {
+      "domain": "nr-data.net",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Productivity / Cloud",
+      "vtRaw": [
+        "business",
+        "general business",
+        "web analytics"
+      ],
+      "visits": 181
+    },
+    {
+      "domain": "mediaiqdigital.com",
+      "ours": "Infrastructure / CDN",
+      "virustotal": "Advertising / Ad Tech",
+      "vtRaw": [
+        "misc",
+        "web analytics",
+        "advertisements"
+      ],
+      "visits": 2
+    },
+    {
+      "domain": "veritonic.com",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "blogs",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 2
+    },
+    {
+      "domain": "intercomcdn.com",
+      "ours": "Infrastructure / CDN",
+      "virustotal": "Advertising / Ad Tech",
+      "vtRaw": [
+        "adsnetwork",
+        "content delivery",
+        "information technology"
+      ],
+      "visits": 2
+    },
+    {
+      "domain": "licdn.com",
+      "ours": "Media Delivery",
+      "virustotal": "Social Networking",
+      "vtRaw": [
+        "hosting",
+        "business networking",
+        "social web - linkedin"
+      ],
+      "visits": 15
+    },
+    {
+      "domain": "ggpht.com",
+      "ours": "Infrastructure / CDN",
+      "virustotal": "Social Networking",
+      "vtRaw": [
+        "content delivery",
+        "social web - youtube"
+      ],
+      "visits": 5
+    },
+    {
+      "domain": "eum-appdynamics.com",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "parked",
+        "information technology",
+        "business and economy"
+      ],
+      "visits": 559
+    },
+    {
+      "domain": "launchdarkly.com",
+      "ours": "Analytics / Monitoring",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computing & technology",
+        "information technology",
+        "information technology"
+      ],
+      "visits": 1516
+    },
+    {
+      "domain": "xgapromomanager-pa.googleapis.com",
+      "ours": "Advertising / Ad Tech",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "computersandsoftware",
+        "web infrastructure",
+        "information technology"
+      ],
+      "visits": 9
+    },
+    {
+      "domain": "ty-eu-storage30-pic.s3.eu-central-1.amazonaws.com",
+      "ours": "Smart Home",
+      "virustotal": "Infrastructure / CDN",
+      "vtRaw": [
+        "Information Technology (alphaMountain.ai)"
+      ],
+      "visits": 140
+    }
+  ],
+  "malicious": [],
+  "autoFixed": [],
+  "unmapped": 114,
+  "ran": "2026-07-14T03:00:00.584Z",
+  "inProgress": false,
+  "autoFix": true
+}

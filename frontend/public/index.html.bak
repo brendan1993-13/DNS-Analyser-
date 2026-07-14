@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Analyser</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0B1120; color: #E8EDF5; font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
+header { background: #0D1526; border-bottom: 1px solid #162030; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg,#00E5CC,#0066FF); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.logo-text { font-weight: 700; font-size: 16px; }
+.logo-sub { font-size: 9px; color: #2A5070; letter-spacing: .8px; font-family: monospace; }
+.btn { cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px; font-size: 12px; font-weight: 600; transition: all .15s; font-family: inherit; }
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.btn-primary { background: linear-gradient(135deg,#00E5CC,#00AAFF); color: #0B1120; }
+.btn-secondary { background: #0D1526; border: 1px solid #1A2B42; color: #6AAACF; }
+.btn-danger { background: #FF6B6B22; border: 1px solid #FF6B6B44; color: #FF6B6B; }
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 60px); }
+.sidebar { background: #0D1526; border-right: 1px solid #162030; padding: 16px 10px; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.nav-item { padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; color: #5A8AAA; border-left: 2px solid transparent; transition: all .15s; display: flex; align-items: center; justify-content: space-between; }
+.nav-item:hover { background: #111E30; }
+.nav-item.active { background: #0F2040; color: #00E5CC; border-left-color: #00E5CC; }
+.badge { padding: 2px 7px; border-radius: 20px; background: #00E5CC22; color: #00E5CC; font-size: 10px; font-weight: 700; }
+.main { padding: 24px; overflow-y: auto; }
+.card { background: #0D1526; border: 1px solid #162030; border-radius: 13px; padding: 18px; }
+.grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: #0D1526; border: 1px solid #162030; border-radius: 12px; padding: 14px 16px; }
+.stat-val { font-size: 20px; font-weight: 700; margin: 6px 0 3px; }
+.stat-lbl { font-size: 10px; color: #2A5070; }
+h2 { font-size: 18px; font-weight: 700; color: #C8D8EA; margin-bottom: 16px; }
+.section-title { font-size: 10px; color: #2A5070; font-weight: 700; letter-spacing: .8px; margin-bottom: 10px; }
+input, select { background: #0B1520; border: 1px solid #1A2B42; border-radius: 8px; color: #C8D8EA; padding: 8px 12px; font-size: 12px; font-family: inherit; outline: none; }
+input:focus { border-color: #00E5CC40; }
+.search-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.row-count { font-size: 11px; color: #3A6080; font-family: monospace; white-space: nowrap; }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th { padding: 9px 12px; text-align: left; color: #7ABFDF; font-weight: 600; font-size: 11px; background: #0D1526; border-bottom: 2px solid #1A2B42; white-space: nowrap; }
+td { padding: 7px 12px; color: #A8BED0; border-bottom: 1px solid #1A2B42; vertical-align: middle; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+tr:hover td { background: #ffffff08; cursor: pointer; }
+tr.expanded-row td { background: #142030; }
+.expand-panel { background: #0F1E30; border-bottom: 2px solid #00E5CC30; }
+.expand-panel td { white-space: normal; max-width: none; }
+.expand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 16px; }
+.info-lbl { font-size: 10px; color: #3A6080; font-weight: 600; letter-spacing: .5px; margin-bottom: 3px; }
+.info-val { font-size: 11px; color: #A8BED0; line-height: 1.55; word-break: break-all; }
+.cat-badge { padding: 2px 8px; border-radius: 20px; font-size: 10px; white-space: nowrap; display: inline-block; }
+.risk-H { background: #FF6B6B22; color: #FF6B6B; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.risk-M { background: #F59E0B22; color: #F59E0B; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.risk-L { background: #34D39922; color: #34D399; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.pagination { display: flex; gap: 6px; align-items: center; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.pager { padding: 5px 10px; border-radius: 6px; border: 1px solid #1A2B42; background: #0D1526; color: #6AAACF; cursor: pointer; font-size: 13px; }
+.pager:disabled { opacity: .4; cursor: not-allowed; }
+.pager-info { font-size: 11px; color: #3A6080; padding: 0 8px; font-family: monospace; }
+.log-box { background: #0B1520; border: 1px solid #162030; border-radius: 10px; overflow: hidden; margin-top: 8px; }
+.log-hdr { padding: 8px 12px; border-bottom: 1px solid #162030; font-size: 9px; color: #2A5070; font-weight: 700; letter-spacing: .8px; }
+.log-body { height: 160px; overflow-y: auto; padding: 6px 0; }
+.log-entry { padding: 3px 12px; display: flex; gap: 8px; font-size: 10px; }
+.log-ts { color: #1A3050; font-family: monospace; flex-shrink: 0; }
+.log-info { color: #5A9ABF; }
+.log-success { color: #00E5CC; }
+.log-error { color: #FF6B6B; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #00E5CC; display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.loading { text-align: center; padding: 40px; color: #2A5070; font-size: 13px; }
+.sidebar-stats { padding: 10px; font-size: 11px; color: #3A6080; border-top: 1px solid #162030; margin-top: 8px; }
+@media(max-width:700px) { .layout{grid-template-columns:1fr} .sidebar{display:none} }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-icon">🛡️</div>
+    <div>
+      <div class="logo-text">DNS Network Analyser</div>
+      <div class="logo-sub">NEXTDNS LOG PROCESSOR · HETZNER HOSTED</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <button class="btn btn-secondary" onclick="triggerPull()">🔄 Pull NextDNS</button>
+    <label for="csvFile" class="btn btn-secondary" style="cursor:pointer">📁 Upload CSV</label>
+    <input type="file" id="csvFile" accept=".csv" style="position:absolute;opacity:0;width:1px;height:1px" onchange="uploadCSV(this)">
+    <button class="btn btn-primary" onclick="downloadExcel()">⬇️ Excel</button>
+    <button class="btn btn-danger" onclick="clearData()">Clear</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="nav-item active" onclick="showTab('overview',this)">📊 Overview</div>
+    <div class="nav-item" onclick="showTab('fulllog',this)">📋 Full Log</div>
+    <div class="nav-item" onclick="showTab('persite',this)">🌐 Per Site</div>
+    <div class="nav-item" onclick="showTab('background',this)">⚙️ Background</div>
+    <div class="nav-item" onclick="showTab('useractivity',this)">👤 User Activity</div>
+    <div class="nav-item" onclick="showTab('newsites',this)" id="newSitesNav">🆕 New Sites</div>
+    <div class="nav-item" onclick="showTab('settings',this)">⚙️ Settings</div>
+    <div class="sidebar-stats" id="sidebarStats"></div>
+    <div class="log-box">
+      <div class="log-hdr"><span class="dot"></span> SYSTEM LOG</div>
+      <div class="log-body" id="logBody"></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="tab-overview">
+      <h2>Overview</h2>
+      <div id="statsGrid" class="grid-stats"></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title">TOP CATEGORIES BY VOLUME</div>
+        <div id="topCats"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">⚠️ NOTES</div>
+        <div style="font-size:11px;color:#3A6A8A;line-height:1.8">
+          <b style="color:#5A9ABF">Activity Types:</b> "Search" = search engines only. "User-Initiated" = direct visits. "Background" = system telemetry, CDN, push, sync.<br>
+          <b style="color:#5A9ABF">CDN accuracy:</b> Large CDNs (Akamai, CloudFront) host thousands of sites — classified as Infrastructure/CDN only.<br>
+          <b style="color:#5A9ABF">Encryption:</b> DNS-over-HTTPS shows domain only, not specific pages visited.<br>
+          <b style="color:#5A9ABF">Privacy risk:</b> High = personal/tracking. Medium = behavioural. Low = technical infrastructure.
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-fulllog" style="display:none">
+      <h2>Full Activity Log</h2>
+      <div class="search-row">
+        <input type="text" id="fulllogSearch" placeholder="Search domain…" style="flex:1;max-width:400px" oninput="debounce(()=>loadFullLog(0),400)()">
+        <span class="row-count" id="fulllogCount"></span>
+      </div>
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid #1A2B42">
+        <table><thead><tr><th>Date</th><th>Time</th><th>Root Domain</th><th>Category</th><th>Type</th><th>Risk</th><th>Country</th><th>Status</th></tr></thead>
+        <tbody id="fulllogBody"><tr><td colspan="8" class="loading">Click to load…</td></tr></tbody></table>
+      </div>
+      <div class="pagination" id="fulllogPager"></div>
+    </div>
+
+    <div id="tab-persite" style="display:none">
+      <h2>Per Site Summary</h2>
+      <div class="search-row">
+        <input type="text" id="persiteSearch" placeholder="Search domain, owner…" style="flex:1;max-width:260px" oninput="debounce(()=>loadPerSite(),400)()">
+        <select id="persiteCat" onchange="persitePage=0;loadPerSite()" style="max-width:210px;background:#0B1520;border:1px solid #1A2B42;border-radius:8px;color:#C8D8EA;padding:8px 10px;font-size:12px;font-family:inherit">
+          <option value="">All Categories</option>
+          <option>Adult Content</option>
+          <option>Advertising / Ad Tech</option>
+          <option>AI Services</option>
+          <option>Analytics / Monitoring</option>
+          <option>Apple Services</option>
+          <option>Entertainment / Streaming</option>
+          <option>Finance / Banking</option>
+          <option>Food / Transport</option>
+          <option>Government</option>
+          <option>Health</option>
+          <option>Infrastructure / CDN</option>
+          <option>News / Media</option>
+          <option>Pool / Aquatic</option>
+          <option>Productivity / Cloud</option>
+          <option>Real Estate</option>
+          <option>Search / Google</option>
+          <option>Shopping / Retail</option>
+          <option>Smart Home</option>
+          <option>Social Networking</option>
+          <option>Telecoms</option>
+          <option>Travel / Logistics</option>
+          <option>Unknown</option>
+          <option>Work / Employment</option>
+        </select>
+        <span class="row-count" id="persiteCount"></span>
+      </div>
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid #1A2B42">
+        <table><thead><tr><th>Domain</th><th>Category</th><th>Owner</th><th>Risk</th><th>Type</th><th>Visits</th><th>Days</th><th>First Seen</th><th>Last Seen</th></tr></thead>
+        <tbody id="persiteBody"><tr><td colspan="9" class="loading">Click tab to load…</td></tr></tbody></table>
+      </div>
+      <div class="pagination" id="persitePager"></div>
+    </div>
+
+    <div id="tab-background" style="display:none">
+      <h2>Background Activity</h2>
+      <div class="card" style="margin-bottom:14px;font-size:11px;color:#3A6080">System-generated traffic — CDN, push notifications, analytics, OS sync.</div>
+      <div class="search-row">
+        <input type="text" id="bgSearch" placeholder="Search domain…" style="flex:1;max-width:400px" oninput="debounce(()=>loadBG(0),400)()">
+        <span class="row-count" id="bgCount"></span>
+      </div>
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid #1A2B42">
+        <table><thead><tr><th>Date</th><th>Time</th><th>Root Domain</th><th>Category</th><th>Owner</th><th>Risk</th><th>Country</th></tr></thead>
+        <tbody id="bgBody"><tr><td colspan="7" class="loading">Click tab to load…</td></tr></tbody></table>
+      </div>
+      <div class="pagination" id="bgPager"></div>
+    </div>
+
+    <div id="tab-useractivity" style="display:none">
+      <h2>User Activity</h2>
+      <div class="card" style="margin-bottom:14px;font-size:11px;color:#3A6080">Traffic triggered by direct user actions — searches, site visits, app usage.</div>
+      <div class="search-row">
+        <input type="text" id="userSearch" placeholder="Search domain…" style="flex:1;max-width:400px" oninput="debounce(()=>loadUser(0),400)()">
+        <span class="row-count" id="userCount"></span>
+      </div>
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid #1A2B42">
+        <table><thead><tr><th>Date</th><th>Time</th><th>Root Domain</th><th>Type</th><th>Category</th><th>Owner</th><th>Risk</th><th>Country</th><th>Status</th></tr></thead>
+        <tbody id="userBody"><tr><td colspan="9" class="loading">Click tab to load…</td></tr></tbody></table>
+      </div>
+      <div class="pagination" id="userPager"></div>
+    </div>
+
+    <div id="tab-newsites" style="display:none">
+      <h2>New Sites <span id="newSitesBadge"></span></h2>
+      <div class="card" style="margin-bottom:14px;font-size:11px;color:#3A6080">Domains not seen before the most recent upload.</div>
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid #1A2B42">
+        <table><thead><tr><th>Domain</th><th>Category</th><th>Owner</th><th>Risk</th><th>Purpose</th></tr></thead>
+        <tbody id="newSitesBody"><tr><td colspan="5" class="loading">No new sites detected yet</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div id="tab-settings" style="display:none">
+      <h2>Settings</h2>
+      <div class="card" style="max-width:500px">
+        <div class="section-title">NEXTDNS API (AUTO-PULL EVERY 6 HOURS)</div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">
+          <div>
+            <div style="font-size:11px;color:#5A9ABF;margin-bottom:5px">NextDNS API Key</div>
+            <input type="password" id="apiKey" placeholder="Get from nextdns.io/account" style="width:100%">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#5A9ABF;margin-bottom:5px">Profile ID</div>
+            <input type="text" id="profileId" placeholder="e.g. abc123" style="width:100%">
+          </div>
+          <button class="btn btn-primary" onclick="saveConfig()" style="width:fit-content">Save API Config</button>
+          <div style="font-size:10px;color:#3A6080;line-height:1.7">
+            API key: <b style="color:#5A9ABF">nextdns.io/account</b> → scroll to API section<br>
+            Profile ID: visible in your NextDNS dashboard URL<br>
+            Auto-pull runs every 6 hours when configured
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DOMAIN DB ────────────────────────────────────────────────────────────────
+const DB = {
+  "apple.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Core iOS/macOS — App Store, Siri, Maps, push notifications",data:"Device ID, location, app usage",risk:"M",bg:true},
+  "facebook.com":{cat:"Social Networking",owner:"Meta Platforms Inc.",purpose:"Facebook social media — feeds, messaging, notifications",data:"Social graph, messages, location",risk:"H",bg:false},
+  "apple-dns.net":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple Private Relay DNS — privacy routing infrastructure",data:"Minimal — privacy service",risk:"L",bg:true},
+  "aaplimg.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple CDN — App Store artwork, iOS config, Safe Browsing tokens",data:"Device requests",risk:"L",bg:true},
+  "com.akadns.net":{cat:"Infrastructure / CDN",owner:"Akamai Technologies",purpose:"Akamai DNS routing — CNAME chaining for Apple and other services",data:"DNS query logs",risk:"L",bg:true},
+  "google.com":{cat:"Search / Google",owner:"Google LLC",purpose:"Google Search, Accounts, Maps, Assistant",data:"Search queries, location, browsing history",risk:"H",bg:false},
+  "google.com.au":{cat:"Search / Google",owner:"Google LLC",purpose:"Google Australia — localised search and services",data:"Search queries, location",risk:"H",bg:false},
+  "bing.com":{cat:"Search / Google",owner:"Microsoft Corporation",purpose:"Microsoft Bing search engine",data:"Search queries, history",risk:"M",bg:false},
+  "fbcdn.net":{cat:"Social Networking",owner:"Meta Platforms Inc.",purpose:"Facebook CDN — photos, videos, assets for Facebook and Instagram",data:"CDN logs, device IP",risk:"M",bg:true},
+  "facebook.net":{cat:"Advertising / Ad Tech",owner:"Meta Platforms Inc.",purpose:"Facebook SDK — enables Facebook Login and tracking pixel on third-party sites",data:"Cross-site browsing, conversion tracking",risk:"H",bg:true},
+  "icloud.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple iCloud — backup, photos, Keychain, Find My, Drive",data:"Files, photos, passwords, location",risk:"M",bg:true},
+  "icloud-content.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"iCloud CDN — large file delivery for photos and backups",data:"File access logs",risk:"L",bg:true},
+  "cdn-apple.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple CDN — software updates and media delivery",data:"Request logs",risk:"L",bg:true},
+  "mzstatic.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple App Store CDN — app icons, screenshots, media",data:"Request logs",risk:"L",bg:true},
+  "apple.map.fastly.net":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple Maps CDN via Fastly — map tile delivery",data:"Location inferred from tiles",risk:"L",bg:true},
+  "apple-relay.fastly-edge.com":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple Private Relay via Fastly — iCloud+ privacy proxy",data:"Privacy by design",risk:"L",bg:true},
+  "apple.news":{cat:"Apple Services",owner:"Apple Inc.",purpose:"Apple News — news app backend and article delivery",data:"Article requests",risk:"L",bg:false},
+  "outlook.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Outlook / Exchange Active Sync — email, calendar, contacts",data:"Email content, calendar, contacts",risk:"M",bg:true},
+  "cloud.microsoft":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Cloud — Outlook sync endpoint, Exchange Online",data:"Auth tokens, sync state",risk:"L",bg:true},
+  "office.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Office 365 — Outlook, Teams, OneDrive, SharePoint",data:"Documents, collaboration metadata",risk:"M",bg:true},
+  "microsoftonline.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Azure AD SSO — OAuth2 for all Microsoft 365 services",data:"Auth tokens, login events",risk:"L",bg:true},
+  "live.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Live — @hotmail, @live email, OneDrive",data:"Email, files, account credentials",risk:"M",bg:true},
+  "hotmail.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Hotmail / Outlook.com legacy email",data:"Email content, calendar",risk:"M",bg:true},
+  "microsoft.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft — docs, software downloads, activation",data:"Software activation ID",risk:"L",bg:true},
+  "office.net":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Office CDN — Office suite content delivery",data:"Request logs",risk:"L",bg:true},
+  "office365.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Office 365 — subscription verification, licensing",data:"Subscription status, device ID",risk:"L",bg:true},
+  "msidentity.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Identity Platform — OAuth2/OIDC auth",data:"Auth tokens",risk:"L",bg:true},
+  "skype.com":{cat:"Productivity / Cloud",owner:"Microsoft Corporation",purpose:"Microsoft Skype — voice/video calling",data:"Call logs, contacts, messages",risk:"M",bg:false},
+  "tuyaeu.com":{cat:"Smart Home",owner:"Tuya Inc. (China, NYSE: TUYA)",purpose:"Tuya Smart EU servers — ConnectLife appliance connectivity",data:"Device usage, schedules, energy data",risk:"M",bg:true},
+  "tuya.com":{cat:"Smart Home",owner:"Tuya Inc.",purpose:"Tuya Smart primary platform — smart home automation",data:"Device usage, automation schedules",risk:"M",bg:true},
+  "we-stats.com":{cat:"Smart Home",owner:"Tuya Inc.",purpose:"Tuya/ConnectLife analytics — smart appliance usage stats",data:"Appliance usage, energy data",risk:"L",bg:true},
+  "smart321.com":{cat:"Smart Home",owner:"Haier/HiSense (inferred, AU)",purpose:"ConnectLife AU — Haier/HiSense smart home devices",data:"Appliance operation, scheduling",risk:"L",bg:true},
+  "connectlife.io":{cat:"Smart Home",owner:"Haier/HiSense",purpose:"ConnectLife — smart home appliance cloud platform",data:"Appliance status, usage patterns",risk:"M",bg:true},
+  "spotify.com":{cat:"Entertainment / Streaming",owner:"Spotify AB (Sweden)",purpose:"Spotify music streaming — playback, playlists, podcasts",data:"Listening history, search queries",risk:"M",bg:false},
+  "spotifycdn.com":{cat:"Entertainment / Streaming",owner:"Spotify AB",purpose:"Spotify CDN — static assets and media delivery",data:"Request logs",risk:"L",bg:true},
+  "scdn.co":{cat:"Entertainment / Streaming",owner:"Spotify AB",purpose:"Spotify audio CDN — delivers actual music streams",data:"Stream access logs",risk:"L",bg:true},
+  "tospotify.com":{cat:"Entertainment / Streaming",owner:"Spotify AB",purpose:"Spotify campaign redirect domain",data:"Click tracking",risk:"L",bg:true},
+  "netflix.com":{cat:"Entertainment / Streaming",owner:"Netflix Inc. (NASDAQ: NFLX)",purpose:"Netflix — content browsing, playback, downloads",data:"Viewing history, device info, payment",risk:"M",bg:false},
+  "nflxvideo.net":{cat:"Entertainment / Streaming",owner:"Netflix Inc.",purpose:"Netflix video CDN — delivers actual video streams",data:"Stream access logs",risk:"L",bg:true},
+  "nflxso.net":{cat:"Entertainment / Streaming",owner:"Netflix Inc.",purpose:"Netflix static CDN — UI assets and images",data:"Request logs",risk:"L",bg:true},
+  "bamgrid.com":{cat:"Entertainment / Streaming",owner:"The Walt Disney Company",purpose:"Disney+ / BAMTech — Disney streaming infrastructure",data:"Viewing history, device info",risk:"L",bg:true},
+  "disneyplus.com":{cat:"Entertainment / Streaming",owner:"The Walt Disney Company",purpose:"Disney+ — Disney, Pixar, Marvel, Star Wars streaming",data:"Viewing history, payment details",risk:"M",bg:false},
+  "stan.com.au":{cat:"Entertainment / Streaming",owner:"Nine Entertainment (ASX: NEC)",purpose:"Stan — Australian subscription video streaming",data:"Viewing history, payment details",risk:"M",bg:false},
+  "youtube.com":{cat:"Entertainment / Streaming",owner:"Google LLC",purpose:"YouTube — watch, subscribe, YouTube Premium, Shorts",data:"Viewing history, search queries, comments",risk:"M",bg:false},
+  "nine.com.au":{cat:"Entertainment / Streaming",owner:"Nine Entertainment (ASX: NEC)",purpose:"Nine Entertainment — 9News, 9Now, SMH, AFR",data:"Reading history, video views",risk:"M",bg:false},
+  "7plus.com.au":{cat:"Entertainment / Streaming",owner:"Seven West Media (ASX: SWM)",purpose:"7Plus — Channel 7 Australia free streaming",data:"Viewing history, ad profile",risk:"M",bg:false},
+  "10play.com.au":{cat:"Entertainment / Streaming",owner:"Paramount Global / Network 10",purpose:"10Play — Network 10 catch-up and live streaming",data:"Viewing history, account details",risk:"M",bg:false},
+  "nab.com.au":{cat:"Finance / Banking",owner:"National Australia Bank (ASX: NAB)",purpose:"NAB mobile banking — accounts, transfers, BPay",data:"Banking transactions, biometric auth",risk:"H",bg:false},
+  "westpac.com.au":{cat:"Finance / Banking",owner:"Westpac (ASX: WBC)",purpose:"Westpac banking — accounts, Westpac Live",data:"Banking transactions, biometric auth",risk:"H",bg:false},
+  "anz.com":{cat:"Finance / Banking",owner:"ANZ (ASX: ANZ)",purpose:"ANZ banking — mobile app, ANZ Plus, goMoney",data:"Banking transactions, biometric auth",risk:"H",bg:false},
+  "paypal.com":{cat:"Finance / Banking",owner:"PayPal Holdings Inc. (NASDAQ: PYPL)",purpose:"PayPal — online payments, checkout, PayPal Credit",data:"Payment history, linked accounts",risk:"M",bg:false},
+  "stripe.com":{cat:"Finance / Banking",owner:"Stripe Inc.",purpose:"Stripe — payment processing for online stores",data:"Card details (encrypted), billing address",risk:"M",bg:false},
+  "afterpay.com":{cat:"Finance / Banking",owner:"Block Inc. (NYSE: SQ)",purpose:"Afterpay BNPL — 4 fortnightly instalments",data:"Purchase history, repayment behaviour",risk:"M",bg:false},
+  "paypalobjects.com":{cat:"Finance / Banking",owner:"PayPal Holdings Inc.",purpose:"PayPal SDK CDN — PayPal checkout static assets",data:"Request logs",risk:"L",bg:true},
+  "visa.com":{cat:"Finance / Banking",owner:"Visa Inc. (NYSE: V)",purpose:"Visa network — card verification, 3DS authentication",data:"Transaction verification data",risk:"L",bg:true},
+  "forter.com":{cat:"Finance / Banking",owner:"Forter Inc.",purpose:"Forter fraud prevention — real-time transaction fraud detection",data:"Device fingerprint, behaviour patterns",risk:"M",bg:true},
+  "riskified.com":{cat:"Finance / Banking",owner:"Riskified Ltd.",purpose:"Riskified fraud prevention — ecommerce fraud detection",data:"Device fingerprint, transaction patterns",risk:"M",bg:true},
+  "beforepay.com.au":{cat:"Finance / Banking",owner:"Beforepay Group Ltd (ASX: B4P)",purpose:"Beforepay — Australian wage advance service",data:"Bank account, employment details",risk:"H",bg:false},
+  "afterpay.com":{cat:"Finance / Banking",owner:"Block Inc.",purpose:"Afterpay — buy now pay later service",data:"Purchase history, linked accounts",risk:"M",bg:false},
+  "zip.co":{cat:"Finance / Banking",owner:"Zip Co Ltd (ASX: ZIP)",purpose:"Zip — buy now pay later and digital finance",data:"Credit assessment, purchase history",risk:"M",bg:false},
+  "realestate.com.au":{cat:"Real Estate",owner:"REA Group Ltd (ASX: REA)",purpose:"realestate.com.au — Australia's largest property portal",data:"Property searches, saved listings, contact submissions",risk:"M",bg:false},
+  "reastatic.net":{cat:"Real Estate",owner:"REA Group Ltd",purpose:"REA Group CDN — static assets for realestate.com.au",data:"Request logs",risk:"L",bg:true},
+  "reagroupdata.com.au":{cat:"Real Estate",owner:"REA Group Ltd",purpose:"REA Group analytics — data collection for realestate.com.au",data:"User behaviour, ad targeting",risk:"M",bg:true},
+  "reamedia.com.au":{cat:"Real Estate",owner:"REA Group Ltd",purpose:"REA Media — advertising and media for REA Group",data:"Ad targeting data",risk:"M",bg:true},
+  "domain.com.au":{cat:"Real Estate",owner:"Domain Holdings Australia (ASX: DHG)",purpose:"Domain — second-largest Australian property portal",data:"Property searches, enquiries, location",risk:"M",bg:false},
+  "domainstatic.com.au":{cat:"Real Estate",owner:"Domain Holdings Australia",purpose:"Domain CDN — static assets for domain.com.au",data:"Request logs",risk:"L",bg:true},
+  "tamworthrealestate.com.au":{cat:"Real Estate",owner:"Tamworth Real Estate (Local, NSW)",purpose:"Local Tamworth property agency — sales and rentals",data:"Property enquiry contact details",risk:"L",bg:false},
+  "temu.com":{cat:"Shopping / Retail",owner:"PDD Holdings Inc. (China, NASDAQ: PDD)",purpose:"Temu — direct-from-manufacturer marketplace",data:"Purchase history, payment details, device info",risk:"H",bg:false},
+  "kwcdn.com":{cat:"Shopping / Retail",owner:"PDD Holdings Inc.",purpose:"Temu/Pinduoduo CDN — content delivery for Temu app",data:"CDN request logs",risk:"L",bg:true},
+  "ebay.com":{cat:"Shopping / Retail",owner:"eBay Inc. (NASDAQ: EBAY)",purpose:"eBay — auctions, Buy It Now, promoted listings",data:"Browse/purchase history, payment details",risk:"M",bg:false},
+  "ebay.com.au":{cat:"Shopping / Retail",owner:"eBay Inc.",purpose:"eBay Australia marketplace",data:"Browse/purchase history, payment details",risk:"M",bg:false},
+  "ebayimg.com":{cat:"Shopping / Retail",owner:"eBay Inc.",purpose:"eBay image CDN — product image delivery",data:"Request logs",risk:"L",bg:true},
+  "aliexpress.com":{cat:"Shopping / Retail",owner:"Alibaba Group (China, NYSE: BABA)",purpose:"AliExpress — Chinese manufacturers selling direct",data:"Browse/purchase history, payment details",risk:"H",bg:false},
+  "alicdn.com":{cat:"Shopping / Retail",owner:"Alibaba Group",purpose:"Alibaba CDN — content delivery for AliExpress",data:"CDN request logs",risk:"L",bg:true},
+  "amazon.com.au":{cat:"Shopping / Retail",owner:"Amazon.com Inc. (NASDAQ: AMZN)",purpose:"Amazon Australia — marketplace, Prime, Kindle",data:"Purchase history, Prime membership, voice (Alexa)",risk:"M",bg:false},
+  "bunnings.com.au":{cat:"Shopping / Retail",owner:"Bunnings Group (Wesfarmers ASX: WES)",purpose:"Bunnings — Australia's largest hardware retailer",data:"Browse/purchase history, store location",risk:"L",bg:false},
+  "officeworks.com.au":{cat:"Shopping / Retail",owner:"Wesfarmers Ltd (ASX: WES)",purpose:"Officeworks — office supplies and technology",data:"Purchase history, loyalty card",risk:"L",bg:false},
+  "harveynorman.com.au":{cat:"Shopping / Retail",owner:"Harvey Norman Holdings (ASX: HVN)",purpose:"Harvey Norman — electronics, furniture, appliances",data:"Purchase history, browsing behaviour",risk:"L",bg:false},
+  "bigw.com.au":{cat:"Shopping / Retail",owner:"Woolworths Group (ASX: WOW)",purpose:"Big W — discount department store",data:"Purchase history, Everyday Rewards",risk:"L",bg:false},
+  "catch.com.au":{cat:"Shopping / Retail",owner:"Wesfarmers Ltd",purpose:"Catch — online retail marketplace",data:"Purchase history, Club Catch membership",risk:"L",bg:false},
+  "shopify.com":{cat:"Shopping / Retail",owner:"Shopify Inc. (NYSE: SHOP)",purpose:"Shopify — ecommerce platform for online stores",data:"Purchase history, payment details",risk:"M",bg:false},
+  "shopifysvc.com":{cat:"Shopping / Retail",owner:"Shopify Inc.",purpose:"Shopify platform services — session, fraud, checkout",data:"Session data, fraud signals",risk:"L",bg:true},
+  "shopifycdn.com":{cat:"Shopping / Retail",owner:"Shopify Inc.",purpose:"Shopify CDN — ecommerce static asset delivery",data:"Request logs",risk:"L",bg:true},
+  "gumtree.com.au":{cat:"Shopping / Retail",owner:"eBay Inc.",purpose:"Gumtree — Australian classifieds marketplace",data:"Listing content, contact details, location",risk:"L",bg:false},
+  "seek.com.au":{cat:"Work / Employment",owner:"SEEK Ltd (ASX: SEK)",purpose:"SEEK — Australia's largest employment marketplace",data:"Job searches, resume content, salary",risk:"M",bg:false},
+  "tanda.co":{cat:"Work / Employment",owner:"Tanda Pty Ltd (Brisbane, Australia)",purpose:"Tanda — workforce management, rostering, time & attendance",data:"Work hours, roster, pay rates, employee ID",risk:"M",bg:false},
+  "tanda.com.au":{cat:"Work / Employment",owner:"Tanda Pty Ltd",purpose:"Tanda Australia — workforce management platform",data:"Work schedules, hours, pay rates",risk:"M",bg:false},
+  "workjam.com":{cat:"Work / Employment",owner:"WorkJam Inc. (Canada)",purpose:"WorkJam — frontline workforce digital engagement",data:"Work schedules, team communications",risk:"L",bg:false},
+  "openai.com":{cat:"AI Services",owner:"OpenAI Inc. (US)",purpose:"OpenAI — ChatGPT, DALL-E, GPT-4 API, Playground",data:"Conversation content, prompts, API usage",risk:"M",bg:false},
+  "reddit.com":{cat:"Social Networking",owner:"Reddit Inc. (NYSE: RDDT)",purpose:"Reddit — social news, communities, posts, comments",data:"Post/comment history, upvotes, subreddits",risk:"M",bg:false},
+  "tiktok.com":{cat:"Social Networking",owner:"ByteDance Ltd (China)",purpose:"TikTok — short-form video, For You Page, live streams",data:"Viewing history, biometric data, location, clipboard",risk:"H",bg:false},
+  "instagram.com":{cat:"Social Networking",owner:"Meta Platforms Inc.",purpose:"Instagram — photos, Reels, Stories, DMs, Shopping",data:"Photos, followers, messages, purchase behaviour",risk:"H",bg:false},
+  "linkedin.com":{cat:"Social Networking",owner:"Microsoft Corporation",purpose:"LinkedIn — professional networking, jobs, InMail",data:"Work history, connections, messages",risk:"M",bg:false},
+  "twitter.com":{cat:"Social Networking",owner:"X Corp. (Elon Musk)",purpose:"Twitter / X — real-time news, trends, Spaces",data:"Posts, likes, follows, DMs, location",risk:"M",bg:false},
+  "snapchat.com":{cat:"Social Networking",owner:"Snap Inc. (NYSE: SNAP)",purpose:"Snapchat — ephemeral messaging, Stories, Snap Map",data:"Messages, location, contacts, camera",risk:"M",bg:false},
+  "pinterest.com":{cat:"Social Networking",owner:"Pinterest Inc. (NYSE: PINS)",purpose:"Pinterest — visual discovery, ideas, shopping",data:"Pin interests, search queries, ad interactions",risk:"M",bg:false},
+  "bom.gov.au":{cat:"Government",owner:"Australian Bureau of Meteorology",purpose:"BOM — weather forecasts, warnings, radar",data:"Location queries — no personal data",risk:"L",bg:false},
+  "my.gov.au":{cat:"Government",owner:"Services Australia (Commonwealth)",purpose:"myGov — Medicare, Centrelink, ATO, My Health Record",data:"Government service interactions, identity, tax",risk:"M",bg:false},
+  "nsw.gov.au":{cat:"Government",owner:"NSW Government",purpose:"NSW Government digital services — Service NSW, licensing",data:"Identity verification, government interactions",risk:"L",bg:false},
+  "myid.gov.au":{cat:"Government",owner:"Australian Taxation Office",purpose:"myGovID — Australian Government digital identity",data:"Identity verification, biometric data",risk:"M",bg:false},
+  "qantas.com":{cat:"Travel / Logistics",owner:"Qantas Airways Ltd (ASX: QAN)",purpose:"Qantas — flight booking, Frequent Flyer, Hotels",data:"Travel history, passport, loyalty points",risk:"M",bg:false},
+  "qantas.com.au":{cat:"Travel / Logistics",owner:"Qantas Airways Ltd",purpose:"Qantas Australia — domestic flights, Jetstar",data:"Travel history, account details",risk:"M",bg:false},
+  "auspost.com.au":{cat:"Travel / Logistics",owner:"Australia Post (Commonwealth Government)",purpose:"Australia Post — parcel tracking, MyPost",data:"Delivery address, parcel contents",risk:"L",bg:false},
+  "aquafy.com.au":{cat:"Pool / Aquatic",owner:"Aquafy (Australia)",purpose:"Pool and spa services — equipment, water treatment",data:"Purchase history, service address",risk:"L",bg:false},
+  "weknowwatergardens.com.au":{cat:"Pool / Aquatic",owner:"We Know Water Gardens (Australia)",purpose:"Water garden specialist — pond plants, fish, accessories",data:"Purchase history, contact details",risk:"L",bg:false},
+  "netimes.com.au":{cat:"News / Media",owner:"New England Times (Tamworth, NSW)",purpose:"NE Times — local news for Tamworth and New England NSW",data:"Article views, subscriber data",risk:"L",bg:false},
+  "medadvisor.com.au":{cat:"Health",owner:"MedAdvisor Ltd (ASX: MDR)",purpose:"MedAdvisor — medication management, prescription tracking",data:"Medication list, dosage, dispensing history",risk:"H",bg:false},
+  "optus.com.au":{cat:"Telecoms",owner:"SingTel Optus Pty Ltd",purpose:"Optus — mobile plans, NBN, Optus Sport",data:"Account, call records, data usage",risk:"M",bg:false},
+  "exetel.com.au":{cat:"Telecoms",owner:"Exetel Pty Ltd",purpose:"Exetel — Australian internet service provider",data:"Account details, data usage",risk:"L",bg:false},
+  "uber.com":{cat:"Food / Transport",owner:"Uber Technologies Inc. (NYSE: UBER)",purpose:"Uber — ride-sharing and Uber Eats food delivery",data:"Precise real-time location, trip history, payment",risk:"H",bg:false},
+  "doordash.com":{cat:"Food / Transport",owner:"DoorDash Inc. (NYSE: DASH)",purpose:"DoorDash — food delivery app",data:"Location, order history, payment details",risk:"M",bg:false},
+  "dominos.com.au":{cat:"Food / Transport",owner:"Domino's Pizza Enterprises (ASX: DMP)",purpose:"Domino's Australia — pizza ordering and delivery",data:"Order history, address, payment",risk:"M",bg:false},
+  "mcd.com":{cat:"Food / Transport",owner:"McDonald's Corporation (NYSE: MCD)",purpose:"McDonald's — MyMacca's app, ordering, loyalty",data:"Order history, location, loyalty points",risk:"L",bg:false},
+  "kfc.com.au":{cat:"Food / Transport",owner:"Collins Foods Ltd (ASX: CKF)",purpose:"KFC Australia — ordering app, KFC Rewards",data:"Order history, loyalty points, location",risk:"L",bg:false},
+  "menulog.com.au":{cat:"Food / Transport",owner:"Just Eat Takeaway.com",purpose:"Menulog — Australian food delivery marketplace",data:"Order history, delivery address, payment",risk:"M",bg:false},
+  "pornhub.com":{cat:"Adult Content",owner:"Aylo (formerly MindGeek, Canada)",purpose:"PornHub — major adult video streaming platform",data:"Viewing history, search queries, device fingerprint",risk:"H",bg:false},
+  "xvideos.com":{cat:"Adult Content",owner:"WGCZ Holding (Czech Republic)",purpose:"XVideos — major adult video streaming platform",data:"Viewing history, search queries, device info",risk:"H",bg:false},
+  "chaturbate.com":{cat:"Adult Content",owner:"Multi Media LLC (US)",purpose:"Chaturbate — adult live cam platform with tips",data:"Live stream viewing, chat, tip transactions",risk:"H",bg:false},
+  "sniffies.com":{cat:"Adult Content",owner:"Sniffies Inc. (US)",purpose:"Sniffies — location-based gay/bisexual cruising app",data:"Precise real-time GPS, profile data, encounter preferences",risk:"H",bg:false},
+  "gayporn.com":{cat:"Adult Content",owner:"Unknown",purpose:"Gay adult content website",data:"Viewing history, device info",risk:"H",bg:false},
+  "gayporn.live":{cat:"Adult Content",owner:"Unknown",purpose:"Gay adult live streaming website",data:"Viewing history, chat data",risk:"H",bg:false},
+  "onlydudes.com":{cat:"Adult Content",owner:"Unknown",purpose:"Gay adult content platform",data:"Viewing history, device info",risk:"H",bg:false},
+  "phncdn.com":{cat:"Adult Content",owner:"Aylo (MindGeek)",purpose:"PornHub CDN — video streams and static assets",data:"Video access logs, IP address",risk:"M",bg:true},
+  "trafficjunky.net":{cat:"Adult Content",owner:"Aylo (MindGeek)",purpose:"TrafficJunky — adult ad network for PornHub, RedTube, YouPorn",data:"Adult content viewing, ad targeting, device fingerprint",risk:"H",bg:true},
+  "trafficjunky.com":{cat:"Adult Content",owner:"Aylo (MindGeek)",purpose:"TrafficJunky adult ad network (alternate domain)",data:"Adult content viewing, ad targeting",risk:"H",bg:true},
+  "xvideos-cdn.com":{cat:"Adult Content",owner:"WGCZ Holding",purpose:"XVideos CDN — adult video content delivery",data:"Stream access logs",risk:"M",bg:true},
+  "mmcdn.com":{cat:"Adult Content",owner:"Multi Media LLC (Chaturbate)",purpose:"Chaturbate CDN — live stream and asset delivery",data:"Stream access logs",risk:"M",bg:true},
+  "exoclick.com":{cat:"Adult Content",owner:"ExoClick S.L. (Spain)",purpose:"ExoClick — adult and mainstream advertising network",data:"Ad targeting data, browsing profile",risk:"H",bg:true},
+  "doubleclick.net":{cat:"Advertising / Ad Tech",owner:"Google LLC",purpose:"Google DoubleClick — ad serving, retargeting, conversion tracking",data:"Browsing history, ad clicks, device fingerprint",risk:"H",bg:true},
+  "googlesyndication.com":{cat:"Advertising / Ad Tech",owner:"Google LLC",purpose:"Google AdSense — display advertising on publisher sites",data:"Ad impressions, targeting cookies",risk:"H",bg:true},
+  "googletagmanager.com":{cat:"Advertising / Ad Tech",owner:"Google LLC",purpose:"Google Tag Manager — deploys tracking scripts",data:"Triggers multiple trackers",risk:"M",bg:true},
+  "googleadservices.com":{cat:"Advertising / Ad Tech",owner:"Google LLC",purpose:"Google Ads conversion tracking — records ad-driven conversions",data:"Ad clicks, conversion actions, remarketing",risk:"M",bg:true},
+  "criteo.com":{cat:"Advertising / Ad Tech",owner:"Criteo SA (France, NASDAQ: CRTO)",purpose:"Criteo retargeting — shows ads for products you've browsed",data:"Browse/purchase history, retargeting profile",risk:"H",bg:true},
+  "pubmatic.com":{cat:"Advertising / Ad Tech",owner:"PubMatic Inc. (NASDAQ: PUBM)",purpose:"PubMatic SSP — real-time ad auction for publishers",data:"Ad impression data, user segments",risk:"M",bg:true},
+  "rubiconproject.com":{cat:"Advertising / Ad Tech",owner:"Magnite Inc. (NASDAQ: MGNI)",purpose:"Magnite SSP — programmatic advertising supply-side platform",data:"Ad impressions, user targeting segments",risk:"M",bg:true},
+  "demdex.net":{cat:"Advertising / Ad Tech",owner:"Adobe Inc.",purpose:"Adobe Audience Manager — builds user segments for targeted ads",data:"Browsing behaviour, audience segments, cross-site tracking",risk:"H",bg:true},
+  "adnxs.com":{cat:"Advertising / Ad Tech",owner:"Microsoft Corporation (Xandr)",purpose:"Xandr — one of world's largest programmatic ad platforms",data:"Browsing behaviour, audience segments, cross-site identity",risk:"H",bg:true},
+  "adsrvr.org":{cat:"Advertising / Ad Tech",owner:"The Trade Desk Inc. (NASDAQ: TTD)",purpose:"The Trade Desk — major independent ad buying platform",data:"Browsing history, ad exposure, audience segments",risk:"H",bg:true},
+  "taboola.com":{cat:"Advertising / Ad Tech",owner:"Taboola.com Ltd (NASDAQ: TBLA)",purpose:"Taboola — 'Around the Web' sponsored content on news sites",data:"Reading behaviour, click patterns, audience segments",risk:"M",bg:true},
+  "outbrain.com":{cat:"Advertising / Ad Tech",owner:"Outbrain Inc. (NASDAQ: OB)",purpose:"Outbrain — content recommendation advertising on news sites",data:"Article reading, click behaviour",risk:"M",bg:true},
+  "casalemedia.com":{cat:"Advertising / Ad Tech",owner:"Index Exchange Inc.",purpose:"Index Exchange — programmatic advertising exchange",data:"User segments, bid data, impression logs",risk:"M",bg:true},
+  "bidswitch.net":{cat:"Advertising / Ad Tech",owner:"IPONWEB / Criteo",purpose:"Bidswitch — programmatic advertising routing infrastructure",data:"Ad bid requests, user segments",risk:"M",bg:true},
+  "id5-sync.com":{cat:"Advertising / Ad Tech",owner:"ID5 SAS (France)",purpose:"ID5 — cross-publisher advertising identity matching",data:"Cross-publisher user identifier, consent signals",risk:"H",bg:true},
+  "eu-4-id5-sync.com":{cat:"Advertising / Ad Tech",owner:"ID5 SAS (France)",purpose:"ID5 EU identity sync (region 4) — advertising identity matching",data:"Cross-publisher user ID",risk:"H",bg:true},
+  "eu-3-id5-sync.com":{cat:"Advertising / Ad Tech",owner:"ID5 SAS (France)",purpose:"ID5 EU identity sync (region 3) — advertising identity matching",data:"Cross-publisher user ID",risk:"H",bg:true},
+  "eu-1-id5-sync.com":{cat:"Advertising / Ad Tech",owner:"ID5 SAS (France)",purpose:"ID5 EU identity sync (region 1) — advertising identity matching",data:"Cross-publisher user ID",risk:"H",bg:true},
+  "greylabeldelivery.com":{cat:"Advertising / Ad Tech",owner:"REA Group Ltd",purpose:"REA Group grey-label tag delivery — tracking for realestate.com.au",data:"User behaviour, ad targeting",risk:"M",bg:true},
+  "googletagmanager.com":{cat:"Advertising / Ad Tech",owner:"Google LLC",purpose:"Google Tag Manager — marketing and analytics tag container",data:"Triggers multiple third-party trackers",risk:"M",bg:true},
+  "omtrdc.net":{cat:"Analytics / Monitoring",owner:"Adobe Inc.",purpose:"Adobe Analytics (Omniture) — enterprise web analytics",data:"Page views, click paths, session data",risk:"M",bg:true},
+  "adobedtm.com":{cat:"Analytics / Monitoring",owner:"Adobe Inc.",purpose:"Adobe Dynamic Tag Manager — marketing analytics tags",data:"Analytics events, user behaviour",risk:"M",bg:true},
+  "clarity.ms":{cat:"Analytics / Monitoring",owner:"Microsoft Corporation",purpose:"Microsoft Clarity — website heatmap and session recording",data:"Click heatmaps, scroll maps, session recordings",risk:"M",bg:true},
+  "google-analytics.com":{cat:"Analytics / Monitoring",owner:"Google LLC",purpose:"Google Analytics 4 — website and app analytics tracking",data:"Page views, user journeys, demographics",risk:"M",bg:true},
+  "hotjar.com":{cat:"Analytics / Monitoring",owner:"Contentsquare (formerly Hotjar)",purpose:"Hotjar — heatmapping and user session recording",data:"Session recordings, click heatmaps, scroll depth",risk:"M",bg:true},
+  "amplitude.com":{cat:"Analytics / Monitoring",owner:"Amplitude Inc. (NASDAQ: AMPL)",purpose:"Amplitude — product analytics and user behaviour platform",data:"Feature usage, user paths, session data",risk:"M",bg:true},
+  "mixpanel.com":{cat:"Analytics / Monitoring",owner:"Mixpanel Inc.",purpose:"Mixpanel — product analytics, user event tracking",data:"Feature usage events, user ID, device info",risk:"M",bg:true},
+  "segment.io":{cat:"Analytics / Monitoring",owner:"Twilio Inc.",purpose:"Segment — customer data pipeline, forwards to many partners",data:"App events, user ID — distributed to multiple third parties",risk:"M",bg:true},
+  "segment.com":{cat:"Analytics / Monitoring",owner:"Twilio Inc.",purpose:"Segment — customer data platform and analytics pipeline",data:"App events, user ID, device data",risk:"M",bg:true},
+  "mparticle.com":{cat:"Analytics / Monitoring",owner:"mParticle Inc.",purpose:"mParticle — customer data platform, distributes to partners",data:"App events, user ID — forwarded to multiple third parties",risk:"M",bg:true},
+  "newrelic.com":{cat:"Analytics / Monitoring",owner:"New Relic Inc.",purpose:"New Relic — application performance monitoring",data:"App performance metrics, error logs",risk:"L",bg:true},
+  "nr-data.net":{cat:"Analytics / Monitoring",owner:"New Relic Inc.",purpose:"New Relic data ingestion — APM telemetry endpoint",data:"Performance metrics, transaction traces",risk:"L",bg:true},
+  "sentry.io":{cat:"Analytics / Monitoring",owner:"Functional Software Inc.",purpose:"Sentry — application error and performance monitoring",data:"Error logs, stack traces, user actions before crash",risk:"L",bg:true},
+  "crashlytics.com":{cat:"Analytics / Monitoring",owner:"Google LLC",purpose:"Firebase Crashlytics — mobile app crash reporting",data:"Crash logs, device info, app state",risk:"L",bg:true},
+  "app-measurement.com":{cat:"Analytics / Monitoring",owner:"Google LLC",purpose:"Firebase Analytics — mobile app event measurement",data:"App usage events, screen views, device info",risk:"M",bg:true},
+  "appcenter.ms":{cat:"Analytics / Monitoring",owner:"Microsoft Corporation",purpose:"Microsoft App Center — mobile crash analytics and distribution",data:"Crash logs, device info, app version",risk:"L",bg:true},
+  "launchdarkly.com":{cat:"Analytics / Monitoring",owner:"LaunchDarkly Inc.",purpose:"LaunchDarkly — feature flag management for apps",data:"Device ID, feature flag evaluations",risk:"L",bg:true},
+  "split.io":{cat:"Analytics / Monitoring",owner:"Split Software Inc.",purpose:"Split — feature flagging and A/B testing platform",data:"Feature flag evaluations, experiment assignments",risk:"L",bg:true},
+  "qualtrics.com":{cat:"Analytics / Monitoring",owner:"SAP Qualtrics LLC",purpose:"Qualtrics — experience management, pop-up surveys",data:"Survey responses, page context",risk:"L",bg:true},
+  "survicate.com":{cat:"Analytics / Monitoring",owner:"Survicate sp. z o.o. (Poland)",purpose:"Survicate — customer feedback and NPS surveys",data:"Survey responses, user identifiers",risk:"L",bg:true},
+  "braze.com":{cat:"Analytics / Monitoring",owner:"Braze Inc. (NASDAQ: BRZE)",purpose:"Braze — push notifications and customer engagement (US)",data:"User segments, notification delivery, device token",risk:"M",bg:true},
+  "braze.eu":{cat:"Analytics / Monitoring",owner:"Braze Inc.",purpose:"Braze — customer engagement platform (EU servers)",data:"User segments, notification delivery",risk:"M",bg:true},
+  "appboycdn.com":{cat:"Analytics / Monitoring",owner:"Braze Inc. (legacy Appboy)",purpose:"Braze CDN — in-app message and push notification assets",data:"Delivery confirmation",risk:"L",bg:true},
+  "moengage.com":{cat:"Analytics / Monitoring",owner:"MoEngage Inc.",purpose:"MoEngage — mobile marketing automation and push notifications",data:"User behaviour, notification engagement",risk:"L",bg:true},
+  "swrve.com":{cat:"Analytics / Monitoring",owner:"Swrve Network Inc.",purpose:"Swrve — mobile marketing automation and A/B testing",data:"App usage, notification interactions, user segments",risk:"L",bg:true},
+  "adjust.com":{cat:"Analytics / Monitoring",owner:"Adjust GmbH (acquired by AppLovin)",purpose:"Adjust — mobile app attribution and marketing analytics",data:"Install attribution, post-install events",risk:"M",bg:true},
+  "branch.io":{cat:"Analytics / Monitoring",owner:"Branch Metrics Inc.",purpose:"Branch — mobile deep linking and app attribution",data:"App install attribution, link clicks",risk:"L",bg:true},
+  "appsflyersdk.com":{cat:"Analytics / Monitoring",owner:"AppsFlyer Ltd",purpose:"AppsFlyer — mobile marketing attribution SDK",data:"App install attribution, in-app events",risk:"M",bg:true},
+  "kochava.com":{cat:"Analytics / Monitoring",owner:"Kochava Inc.",purpose:"Kochava — mobile app attribution and analytics",data:"Install attribution, in-app purchase events",risk:"M",bg:true},
+  "singular.net":{cat:"Analytics / Monitoring",owner:"Singular Labs Inc.",purpose:"Singular — mobile marketing analytics and attribution",data:"App install attribution, marketing analytics",risk:"M",bg:true},
+  "datadome.co":{cat:"Analytics / Monitoring",owner:"DataDome SAS",purpose:"DataDome — bot detection and anti-scraping protection",data:"Request fingerprints, behaviour patterns",risk:"L",bg:true},
+  "bugsnag.com":{cat:"Analytics / Monitoring",owner:"Bugsnag Inc.",purpose:"Bugsnag — application stability and error monitoring",data:"Error logs, stack traces, device info",risk:"L",bg:true},
+  "raygun.io":{cat:"Analytics / Monitoring",owner:"Raygun Ltd (New Zealand)",purpose:"Raygun — application crash reporting",data:"Crash logs, performance metrics",risk:"L",bg:true},
+  "go-mpulse.net":{cat:"Analytics / Monitoring",owner:"Akamai Technologies",purpose:"Akamai mPulse — real user monitoring and performance",data:"Page load timing, browser type, connection speed",risk:"L",bg:true},
+  "dotmetrics.net":{cat:"Analytics / Monitoring",owner:"NielsenIQ (OzTAM)",purpose:"DotMetrics — Australian digital audience measurement",data:"Page views, session data",risk:"L",bg:true},
+};
+
+const CAT_COLORS = {
+  "Apple Services":"D9E1F2","Social Networking":"FCE4D6","Infrastructure / CDN":"F2F2F2",
+  "Productivity / Cloud":"DDEBF7","Entertainment / Streaming":"EDE7F6","Finance / Banking":"E2EFDA",
+  "Shopping / Retail":"FFF9E6","Search / Google":"FFF2CC","Analytics / Monitoring":"DEEBF7",
+  "Advertising / Ad Tech":"FCE4D6","Real Estate":"D6DCE4","Food / Transport":"FDEBD0",
+  "Work / Employment":"EAF5E5","Smart Home":"E8F5E9","Government":"F5F5DC",
+  "AI Services":"E8F8E9","Pool / Aquatic":"B3E5FC","Adult Content":"FFCDD2",
+  "Travel / Logistics":"E3F2FD","Health":"F1F8E9","Telecoms":"F3E5F5",
+  "News / Media":"FFF8E1","Unknown":"EEEEEE",
+};
+
+function classify(root) {
+  if (DB[root]) return DB[root];
+  const d = root.toLowerCase();
+  if (d.includes('akamai')||d.includes('edgesuite')||d.includes('akadns')||d.includes('edgekey')||d.includes('akamaiedge')||d.includes('akamaihd')) return {cat:'Infrastructure / CDN',owner:'Akamai Technologies',purpose:'Akamai CDN — content delivery network infrastructure',data:'IP address, request timing',risk:'L',bg:true};
+  if (d.includes('cloudfront')||d.includes('amazonaws')||d.includes('awsglobalaccelerator')) return {cat:'Infrastructure / CDN',owner:'Amazon Web Services',purpose:'AWS cloud infrastructure — hosting, CDN, or API gateway',data:'Depends on hosted service',risk:'L',bg:true};
+  if (d.includes('fastly')) return {cat:'Infrastructure / CDN',owner:'Fastly Inc.',purpose:'Fastly CDN edge cloud delivery',data:'IP address, request logs',risk:'L',bg:true};
+  if (d.includes('cloudflare')) return {cat:'Infrastructure / CDN',owner:'Cloudflare Inc.',purpose:'Cloudflare CDN, DDoS protection, or proxy',data:'IP address for DDoS protection',risk:'L',bg:true};
+  if (d.includes('googleapis')||d.includes('gstatic')||d.includes('googleusercontent')) return {cat:'Infrastructure / CDN',owner:'Google LLC',purpose:'Google APIs or infrastructure services',data:'API request content',risk:'M',bg:true};
+  if ((d.includes('apple')||d.includes('aaplimg'))&&!d.includes('snapple')) return {cat:'Apple Services',owner:'Apple Inc.',purpose:'Apple infrastructure services or CDN',data:'Device requests',risk:'L',bg:true};
+  if (d.includes('microsoft')||d.includes('msedge')||d.includes('azurefd')||d.includes('trafficmanager')||d.includes('msftauth')||d.includes('windows.net')) return {cat:'Productivity / Cloud',owner:'Microsoft Corporation',purpose:'Microsoft cloud infrastructure and services',data:'Authentication tokens, service requests',risk:'L',bg:true};
+  if (d.includes('facebook')||d.includes('fbcdn')||d.includes('fbsbx')) return {cat:'Social Networking',owner:'Meta Platforms Inc.',purpose:'Meta/Facebook CDN or infrastructure',data:'IP address, CDN logs',risk:'M',bg:true};
+  if (d.includes('porn')||d.includes('xvideo')||d.includes('xnxx')||d.includes('chaturbate')||d.includes('stripchats')||d.includes('gayporn')||d.includes('sniffies')||d.includes('trafficjunky')||d.includes('exoclick')) return {cat:'Adult Content',owner:'Unknown Adult Content Provider',purpose:'Adult content platform or associated ad network',data:'Viewing history, device fingerprint',risk:'H',bg:false};
+  if (d.endsWith('.gov.au')) return {cat:'Government',owner:'Australian Government',purpose:'Australian Government digital service',data:'Depends on service',risk:'L',bg:false};
+  if (d.includes('cdn')||d.includes('static')||d.includes('assets')||d.includes('media')) return {cat:'Infrastructure / CDN',owner:'Unknown CDN/Hosting',purpose:'Content delivery or static asset hosting',data:'Request logs',risk:'L',bg:true};
+  return {cat:'Unknown',owner:'Unknown',purpose:'Unclassified — domain not in knowledge base',data:'Unknown',risk:'L',bg:true};
+}
+
+const SEARCH_DOMAINS = new Set(['google.com','google.com.au','bing.com','duckduckgo.com','baidu.com','yahoo.com']);
+const USER_CATS = new Set(['Social Networking','Shopping / Retail','Entertainment / Streaming','Food / Transport','Travel / Logistics','Government','Pool / Aquatic','Work / Employment','Real Estate','News / Media','Health','Telecoms','AI Services','Adult Content']);
+
+function actType(root, cat) {
+  if (SEARCH_DOMAINS.has(root)) return 'Search';
+  if (USER_CATS.has(cat)) return 'User-Initiated';
+  if (cat==='Finance / Banking'&&!['forter.com','visa.com','stripe.network','nab.edgekey.net','paypalobjects.com','riskified.com'].includes(root)) return 'User-Initiated';
+  return 'Background';
+}
+
+function isBackground(root, cat) { return actType(root,cat) === 'Background'; }
+
+// ─── UI HELPERS ──────────────────────────────────────────────────────────────
+function riskBadge(r){return `<span class="risk-${r||'L'}">${r||'L'}</span>`;}
+function catBadge(cat){const col='#'+(CAT_COLORS[cat]||'334466');return `<span class="cat-badge" style="background:${col}40;color:#A8BED0">${cat||'Unknown'}</span>`;}
+function mono(t){return `<span style="font-family:monospace;font-size:10px">${t||''}</span>`;}
+
+function log(msg, type='info') {
+  const lb = document.getElementById('logBody');
+  const ts = new Date().toLocaleTimeString();
+  const d = document.createElement('div');
+  d.className = 'log-entry';
+  d.innerHTML = `<span class="log-ts">${ts}</span><span class="log-${type}" style="margin-left:6px">${msg}</span>`;
+  lb.appendChild(d);
+  lb.scrollTop = lb.scrollHeight;
+  while(lb.children.length > 60) lb.removeChild(lb.firstChild);
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+}
+
+function pagerHTML(page, pages, fn) {
+  if (pages <= 1) return '';
+  return `<button class="pager" ${page===0?'disabled':''} onclick="${fn}(0)">«</button>
+    <button class="pager" ${page===0?'disabled':''} onclick="${fn}(${page-1})">‹</button>
+    <span class="pager-info">${page+1} / ${pages}</span>
+    <button class="pager" ${page>=pages-1?'disabled':''} onclick="${fn}(${page+1})">›</button>
+    <button class="pager" ${page>=pages-1?'disabled':''} onclick="${fn}(${pages-1})">»</button>`;
+}
+
+let expandedRow = null;
+function toggleExpand(el, row) {
+  if (expandedRow) {
+    expandedRow.classList.remove('expanded-row');
+    const next = expandedRow.nextSibling;
+    if (next && next.classList && next.classList.contains('expand-panel')) next.remove();
+    if (expandedRow === el) { expandedRow = null; return; }
+  }
+  expandedRow = el;
+  el.classList.add('expanded-row');
+  const info = classify(row.root_domain||'');
+  const at = actType(row.root_domain||'', info.cat);
+  const fields = [
+    ['Full Domain', row.domain||row.root_domain||'', true],
+    ['Root Domain', row.root_domain||'', true],
+    ['Owner / Company', row._owner||info.owner||'Unknown', false],
+    ['Category', row._cat||info.cat||'Unknown', false],
+    ['Activity Type', at, false],
+    ['Privacy Risk', info.risk==='H'?'High — personal/tracking data':info.risk==='M'?'Medium — behavioural data':'Low — technical infrastructure', false],
+    ['Purpose & Description', row._purpose||info.purpose||'No description available', false],
+    ['Data Collected', row._data||info.data||'Unknown', false],
+    ...(row.timestamp?[['Timestamp', row.timestamp, true]]:[]),
+    ...(row.query_type?[['Query Type', row.query_type, false]]:[]),
+    ...(row.destination_country?[['Country', row.destination_country, false]]:[]),
+    ...(row.status?[['Status', row.status, false]]:[]),
+    ...(row.reasons?[['Block Reason', row.reasons, false]]:[]),
+    ...(row.first_seen?[['First Seen', row.first_seen, false]]:[]),
+    ...(row.last_seen?[['Last Seen', row.last_seen, false]]:[]),
+    ...(row.total_visits!==undefined?[['Total Visits', String(row.total_visits), false]]:[]),
+    ...(row.unique_days!==undefined?[['Unique Days', String(row.unique_days), false]]:[]),
+  ];
+  const colCount = el.cells.length;
+  const tr = document.createElement('tr');
+  tr.className = 'expand-panel';
+  tr.innerHTML = `<td colspan="${colCount}"><div class="expand-grid">${
+    fields.map(([l,v,m])=>`<div style="${l==='Purpose & Description'||l==='Data Collected'?'grid-column:1/-1':''}">
+      <div class="info-lbl">${l}</div><div class="info-val${m?' mono':''}">${v}</div></div>`).join('')
+  }</div></td>`;
+  el.insertAdjacentElement('afterend', tr);
+}
+
+// ─── TAB NAVIGATION ──────────────────────────────────────────────────────────
+const tabLoaded = {};
+function showTab(id, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t=>t.style.display='none');
+  document.getElementById('tab-'+id).style.display='';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  if (!tabLoaded[id]) {
+    tabLoaded[id] = true;
+    if (id==='fulllog') loadFullLog(0);
+    if (id==='persite') loadPerSite();
+    if (id==='background') loadBG(0);
+    if (id==='useractivity') loadUser(0);
+  }
+}
+
+// ─── OVERVIEW ────────────────────────────────────────────────────────────────
+async function loadOverview() {
+  log('Loading summary…');
+  try {
+    const res = await fetch('/api/summary');
+    const d = await res.json();
+    const sg = document.getElementById('statsGrid');
+    const stats = [
+      {l:'Total Queries',v:d.count.toLocaleString(),i:'🔍',c:'#00E5CC'},
+      {l:'Unique Domains',v:d.domains.toLocaleString(),i:'🌐',c:'#00AAFF'},
+      {l:'Days Covered',v:d.days.toLocaleString(),i:'📅',c:'#A78BFA'},
+      {l:'Blocked',v:(d.blocked||0).toLocaleString(),i:'🚫',c:'#FF6B6B'},
+    ];
+    sg.innerHTML = stats.map(s=>`<div class="stat-card"><div style="font-size:18px">${s.i}</div><div class="stat-val" style="color:${s.c}">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+
+    // Category totals from top domains
+    const cc={};
+    d.topDomains.forEach(({domain,count})=>{
+      const info=classify(domain);
+      cc[info.cat]=(cc[info.cat]||0)+count;
+    });
+    const top=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const total=d.count||1;
+    document.getElementById('topCats').innerHTML=top.map(([cat,count])=>{
+      const pct=Math.round(count/total*100);
+      const col='#'+(CAT_COLORS[cat]||'334466');
+      return `<div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:12px;color:#A8BED0">${cat}</span>
+          <span style="font-size:10px;color:#3A6080;font-family:monospace">${count.toLocaleString()} (${pct}%)</span>
+        </div>
+        <div style="height:5px;border-radius:3px;background:#162030;overflow:hidden">
+          <div style="height:100%;border-radius:3px;width:${Math.max(pct,.3)}%;background:${col};opacity:.85"></div>
+        </div></div>`;
+    }).join('');
+
+    document.getElementById('sidebarStats').innerHTML = `
+      <div style="font-size:10px;line-height:1.9">
+        <span style="color:#00E5CC;font-weight:700">${d.count.toLocaleString()}</span> rows<br>
+        <span style="color:#00AAFF;font-weight:700">${d.domains}</span> domains<br>
+        <span style="color:#A78BFA;font-weight:700">${d.days}</span> days
+      </div>`;
+
+    log(`✅ ${d.count.toLocaleString()} rows · ${d.domains} domains · ${d.days} days`, 'success');
+  } catch(e) { log(`❌ ${e.message}`, 'error'); }
+}
+
+// ─── FULL LOG ────────────────────────────────────────────────────────────────
+async function loadFullLog(page) {
+  const q = document.getElementById('fulllogSearch')?.value||'';
+  const res = await fetch(`/api/rows?page=${page}&limit=200${q?'&q='+encodeURIComponent(q):''}`);
+  const d = await res.json();
+  document.getElementById('fulllogCount').textContent = `${d.count.toLocaleString()} rows`;
+  const tb = document.getElementById('fulllogBody');
+  tb.innerHTML = '';
+  if (!d.rows.length) { tb.innerHTML='<tr><td colspan="8" class="loading">No results</td></tr>'; return; }
+  d.rows.forEach(r => {
+    const info = classify(r.root_domain||'');
+    const at = actType(r.root_domain||'', info.cat);
+    const date = (r.timestamp||'').split('T')[0]||'';
+    const time = (r.timestamp||'').split('T')[1]?.substring(0,8)||'';
+    const tr = document.createElement('tr');
+    tr.onclick = ()=>toggleExpand(tr, r);
+    tr.innerHTML = `<td>${mono(date)}</td><td>${mono(time)}</td><td>${mono(r.root_domain||'')}</td><td>${catBadge(info.cat)}</td><td><span style="font-size:10px;color:${at==='Background'?'#4A7FA5':at==='Search'?'#F59E0B':'#34D399'}">${at}</span></td><td>${riskBadge(info.risk)}</td><td><span style="font-size:10px;color:#3A6080">${r.destination_country||''}</span></td><td>${r.status?`<span style="font-size:10px;color:${r.status==='blocked'?'#FF6B6B':'#34D399'}">${r.status}</span>`:''}</td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('fulllogPager').innerHTML = pagerHTML(page, d.pages, 'loadFullLog');
+}
+
+// ─── PER SITE ────────────────────────────────────────────────────────────────
+let persiteData = null, persitePage = 0;
+const PERSITE_PAGE = 100;
+async function loadPerSite() {
+  const q = document.getElementById('persiteSearch')?.value||'';
+  const cat = document.getElementById('persiteCat')?.value||'';
+  const params = new URLSearchParams();
+  if(q) params.set('q',q);
+  if(cat) params.set('cat',cat);
+  const res = await fetch('/api/persite'+(params.toString()?'?'+params.toString():''));
+  const d = await res.json();
+  persiteData = d.rows.map(r => {
+    const info = classify(r.root_domain||'');
+    return {...r, _cat:info.cat, _owner:info.owner, _purpose:info.purpose, _data:info.data, _risk:info.risk, _at:actType(r.root_domain||'',info.cat)};
+  });
+  persitePage = 0;
+  renderPerSite();
+}
+function renderPerSite() {
+  const rows = persiteData||[];
+  const start = persitePage * PERSITE_PAGE;
+  const slice = rows.slice(start, start + PERSITE_PAGE);
+  document.getElementById('persiteCount').textContent = `${rows.length.toLocaleString()} domains`;
+  const tb = document.getElementById('persiteBody');
+  tb.innerHTML = '';
+  slice.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.onclick = ()=>toggleExpand(tr, r);
+    tr.innerHTML = `<td>${mono(r.root_domain||'')}</td><td>${catBadge(r._cat)}</td><td><span style="font-size:10px;color:#7AAACF">${r._owner||''}</span></td><td>${riskBadge(r._risk)}</td><td><span style="font-size:10px;color:${r._at==='Background'?'#4A7FA5':'#34D399'}">${r._at}</span></td><td><span style="font-family:monospace;font-size:12px;font-weight:700;color:#00E5CC">${(r.total_visits||0).toLocaleString()}</span></td><td><span style="font-family:monospace;font-size:11px;color:#00AAFF">${r.unique_days||0}</span></td><td>${mono(r.first_seen||'')}</td><td>${mono(r.last_seen||'')}</td>`;
+    tb.appendChild(tr);
+  });
+  const pages = Math.ceil(rows.length/PERSITE_PAGE);
+  document.getElementById('persitePager').innerHTML = pagerHTML(persitePage, pages, 'persiteGoPage');
+}
+function persiteGoPage(p) { persitePage=p; renderPerSite(); }
+
+// ─── BACKGROUND ──────────────────────────────────────────────────────────────
+async function loadBG(page) {
+  const q = document.getElementById('bgSearch')?.value||'';
+  const res = await fetch(`/api/rows?page=${page}&limit=200&tab=bg${q?'&q='+encodeURIComponent(q):''}`);
+  const d = await res.json();
+  // Filter client-side for background
+  const bgRows = d.rows.filter(r=>{ const info=classify(r.root_domain||''); return isBackground(r.root_domain||'',info.cat); });
+  document.getElementById('bgCount').textContent = `${d.count.toLocaleString()} rows (showing background)`;
+  const tb = document.getElementById('bgBody');
+  tb.innerHTML = '';
+  bgRows.forEach(r => {
+    const info = classify(r.root_domain||'');
+    const date = (r.timestamp||'').split('T')[0]||'';
+    const time = (r.timestamp||'').split('T')[1]?.substring(0,8)||'';
+    const tr = document.createElement('tr');
+    tr.onclick = ()=>toggleExpand(tr, {...r, _owner:info.owner, _purpose:info.purpose, _data:info.data});
+    tr.innerHTML = `<td>${mono(date)}</td><td>${mono(time)}</td><td>${mono(r.root_domain||'')}</td><td>${catBadge(info.cat)}</td><td><span style="font-size:10px;color:#7AAACF">${info.owner||''}</span></td><td>${riskBadge(info.risk)}</td><td><span style="font-size:10px;color:#3A6080">${r.destination_country||''}</span></td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('bgPager').innerHTML = pagerHTML(page, d.pages, 'loadBG');
+}
+
+// ─── USER ACTIVITY ───────────────────────────────────────────────────────────
+async function loadUser(page) {
+  const q = document.getElementById('userSearch')?.value||'';
+  const res = await fetch(`/api/rows?page=${page}&limit=200${q?'&q='+encodeURIComponent(q):''}`);
+  const d = await res.json();
+  const userRows = d.rows.filter(r=>{ const info=classify(r.root_domain||''); return !isBackground(r.root_domain||'',info.cat); });
+  document.getElementById('userCount').textContent = `${d.count.toLocaleString()} rows (showing user-initiated)`;
+  const tb = document.getElementById('userBody');
+  tb.innerHTML = '';
+  userRows.forEach(r => {
+    const info = classify(r.root_domain||'');
+    const at = actType(r.root_domain||'', info.cat);
+    const date = (r.timestamp||'').split('T')[0]||'';
+    const time = (r.timestamp||'').split('T')[1]?.substring(0,8)||'';
+    const tr = document.createElement('tr');
+    tr.onclick = ()=>toggleExpand(tr, {...r, _owner:info.owner, _purpose:info.purpose, _data:info.data});
+    tr.innerHTML = `<td>${mono(date)}</td><td>${mono(time)}</td><td>${mono(r.root_domain||'')}</td><td><span style="font-size:10px;font-weight:600;color:${at==='Search'?'#F59E0B':'#34D399'}">${at}</span></td><td>${catBadge(info.cat)}</td><td><span style="font-size:10px;color:#7AAACF">${info.owner||''}</span></td><td>${riskBadge(info.risk)}</td><td><span style="font-size:10px;color:#3A6080">${r.destination_country||''}</span></td><td>${r.status?`<span style="font-size:10px;color:${r.status==='blocked'?'#FF6B6B':'#34D399'}">${r.status}</span>`:''}</td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('userPager').innerHTML = pagerHTML(page, d.pages, 'loadUser');
+}
+
+// ─── ACTIONS ─────────────────────────────────────────────────────────────────
+async function uploadCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  log(`Uploading ${file.name}…`);
+  const form = new FormData();
+  form.append('file', file);
+  try {
+    const res = await fetch('/api/upload', { method:'POST', body:form });
+    const d = await res.json();
+    if (d.error) { log(`❌ ${d.error}`, 'error'); return; }
+    log(`✅ Added ${d.added.toLocaleString()} rows (${d.skipped.toLocaleString()} skipped, ${d.total.toLocaleString()} total)`, 'success');
+    tabLoaded.fulllog=false; tabLoaded.persite=false; tabLoaded.background=false; tabLoaded.useractivity=false;
+    persiteData=null;
+    loadOverview();
+  } catch(e) { log(`❌ Upload failed: ${e.message}`, 'error'); }
+}
+
+async function triggerPull() {
+  log('Pulling from NextDNS API…');
+  try {
+    const res = await fetch('/api/pull', {method:'POST'});
+    const d = await res.json();
+    if (d.error) { log(`❌ ${d.error}`, 'error'); return; }
+    log(`✅ Added ${d.added.toLocaleString()} rows (total ${d.total.toLocaleString()})`, 'success');
+    tabLoaded.fulllog=false; tabLoaded.persite=false; tabLoaded.background=false; tabLoaded.useractivity=false;
+    persiteData=null;
+    loadOverview();
+  } catch(e) { log(`❌ Pull failed: ${e.message}`, 'error'); }
+}
+
+async function saveConfig() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const profileId = document.getElementById('profileId').value.trim();
+  if (!apiKey||!profileId) { log('Enter both API key and Profile ID', 'error'); return; }
+  await fetch('/api/config', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKey,profileId})});
+  log('✅ API config saved — auto-pull active every 6 hours', 'success');
+}
+
+function downloadExcel() {
+  log('Requesting Excel export…');
+  window.location.href = '/api/export';
+}
+
+async function clearData() {
+  if (!confirm('Clear ALL data from server? This cannot be undone.')) return;
+  await fetch('/api/rows', {method:'DELETE'});
+  persiteData=null;
+  Object.keys(tabLoaded).forEach(k=>delete tabLoaded[k]);
+  log('All data cleared', 'info');
+  loadOverview();
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+loadOverview();
+</script>
+</body>
+</html>
