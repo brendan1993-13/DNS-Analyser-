@@ -24,8 +24,15 @@ Columns:
   reasons              TEXT     - block reason if any
   destination_country  TEXT     - 2-letter country code, e.g. 'US'
   device_name          TEXT     - device label, e.g. 'Ben's phone'
+  category             TEXT     - content category, e.g. 'Adult Content','Gambling','Finance / Banking','Social Networking','Apple Services','Messaging / Communication','Shopping / Retail','Entertainment / Streaming','Malicious / Threat','Infrastructure / CDN'
+  service              TEXT     - parent app/service, e.g. 'Netflix','Facebook / Instagram','Apple','Google','Microsoft','Spotify','Temu' (NULL if not mapped to a known app)
+  risk                 TEXT     - privacy risk: 'High','Medium','Low'
+  owner                TEXT     - owning company, e.g. 'Meta Platforms Inc.'
 
 Notes for querying:
+  - To find a category (adult, gambling, finance, etc.), filter on the category column, e.g. WHERE category = 'Adult Content'.
+  - To find an app/service (Netflix, Facebook, etc.), filter on the service column, e.g. WHERE service = 'Netflix'.
+  - category/service/risk/owner are pre-computed on every row - prefer them over guessing from domain text.
   - Times are UTC. The user is in Australian Eastern time (UTC+10). To express
     local time, apply datetime(timestamp,'+10 hours').
   - "blocked" rows are those where status = 'blocked'.
