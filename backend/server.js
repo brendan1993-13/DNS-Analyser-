@@ -647,16 +647,45 @@ app.get('/api/meta-realtime', (req, res) => { res.json(metaRealtimeActivity(db))
 
 
 // ---- AI chat over the logs (text-to-SQL, PIN-gated) ----
-const { ask: chatAsk } = require('./chat');
+const { ask: chatAsk, fetchRows: chatFetchRows } = require('./chat');
 const CHAT_PIN = '4269'; // change to your own PIN
 app.post('/api/chat', async (req, res) => {
   try {
     const question = (req.body && req.body.question) || '';
     if (!question.trim()) return res.status(400).json({ error: 'Ask a question.' });
-    const result = await chatAsk(question);
+    const history = (req.body && Array.isArray(req.body.history)) ? req.body.history : [];
+    const result = await chatAsk(question, history);
     res.json(result);
   } catch (e) {
     res.status(500).json({ error: (e && e.message) || 'Chat failed.' });
+  }
+});
+
+
+// ---- Download a chat answer as xlsx / docx / pdf ----
+const reports = require('./reports');
+app.post('/api/chat/report', async (req, res) => {
+  try {
+    const b = req.body || {};
+    const format = (b.format || 'xlsx').toLowerCase();
+    let rows = [];
+    if (b.sql && !String(b.sql).startsWith('(no query')) {
+      try { rows = chatFetchRows(b.sql); } catch (e) { rows = []; }
+    }
+    const out = await reports.build(format, {
+      title: b.title || 'DNS Analysis Report',
+      question: b.question || '',
+      answer: b.answer || '',
+      sql: b.sql || '',
+      rows: rows
+    });
+    const stamp = new Date(Date.now() + 10*3600*1000).toISOString().substring(0,10);
+    const fname = 'dns_report_' + stamp + '.' + out.ext;
+    res.setHeader('Content-Disposition', 'attachment; filename=' + fname);
+    res.setHeader('Content-Type', out.mime);
+    res.send(out.buf);
+  } catch (e) {
+    res.status(500).json({ error: (e && e.message) || 'Report failed.' });
   }
 });
 

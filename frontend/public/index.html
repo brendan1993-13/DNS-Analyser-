@@ -270,12 +270,12 @@ tr.expanded-row td { background: #142030; }
     <div style="font-size:12px;color:#8A9BAA;margin:6px 0 14px;line-height:1.6">
       Ask anything about your logs in plain English — usage, stats, patterns, blocked domains, devices, times of day. Answers are generated live from your data.
     </div>
+    <div id="chatOut" style="margin-bottom:16px;max-height:55vh;overflow-y:auto"></div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <textarea id="chatQ" rows="3" placeholder="e.g. Which sites did my phone visit most at night last week?"
         style="width:100%;padding:11px 13px;background:#0E1826;border:1px solid #24425F;border-radius:8px;color:#DCE7F0;font-size:14px;resize:vertical;box-sizing:border-box"></textarea>
-      <button class="btn btn-primary" onclick="askChat()" id="chatBtn" style="width:fit-content">Ask</button>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="askChat()" id="chatBtn" style="width:fit-content">Ask</button><button class="btn btn-secondary" onclick="newChat()" style="width:fit-content">New chat</button></div>
     </div>
-    <div id="chatOut" style="margin-top:18px"></div>
   </div>
 </div>
 <div id="tab-settings" style="display:none">
@@ -732,31 +732,76 @@ function toggleExpand(el, row) {
 
 // ─── TAB NAVIGATION ──────────────────────────────────────────────────────────
 const tabLoaded = {};
-async function askChat() {
-    const q = document.getElementById('chatQ').value.trim();
+let chatHistory = [];
+async function downloadReport(idx, format) {
+  const m = chatHistory[idx];
+  if (!m) return;
+  let q = '';
+  for (let j = idx - 1; j >= 0; j--) { if (chatHistory[j].role === 'user') { q = chatHistory[j].content; break; } }
+  try {
+    const res = await fetch('/api/chat/report', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ format: format, title: q.substring(0, 60) || 'DNS Analysis Report', question: q, answer: m.content, sql: m.sql || '' })
+    });
+    if (!res.ok) { alert('Report failed.'); return; }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dns_report.' + format;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) { alert('Report failed: ' + e.message); }
+}
+function renderChat() {
   const out = document.getElementById('chatOut');
+  if (!chatHistory.length) { out.innerHTML = ''; return; }
+  out.innerHTML = chatHistory.map(function (m, i) {
+    if (m.role === 'user') {
+      return '<div style="margin:10px 0;text-align:right"><span style="display:inline-block;background:#1B3A57;color:#DCE7F0;padding:9px 13px;border-radius:12px 12px 2px 12px;max-width:80%;text-align:left;font-size:14px;line-height:1.5">' + m.content.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</span></div>';
+    }
+    const body = (m.content||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+    const meta = m.sql ? '<details style="margin-top:8px;color:#6B8299;font-size:11px"><summary style="cursor:pointer">Show query (' + m.rowCount + ' rows)</summary><pre style="white-space:pre-wrap;background:#0A121C;padding:9px;border-radius:6px;margin-top:5px;color:#8FB0C9;overflow-x:auto">' + (m.sql||'').replace(/</g,'&lt;') + '</pre></details>' : '';
+    const dl = '<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">' +
+      '<button onclick="downloadReport(' + i + ',\'xlsx\')" style="background:#14304A;color:#8FB0C9;border:1px solid #24425F;border-radius:6px;padding:4px 9px;font-size:11px;cursor:pointer">Excel</button>' +
+      '<button onclick="downloadReport(' + i + ',\'docx\')" style="background:#14304A;color:#8FB0C9;border:1px solid #24425F;border-radius:6px;padding:4px 9px;font-size:11px;cursor:pointer">Word</button>' +
+      '<button onclick="downloadReport(' + i + ',\'pdf\')" style="background:#14304A;color:#8FB0C9;border:1px solid #24425F;border-radius:6px;padding:4px 9px;font-size:11px;cursor:pointer">PDF</button>' +
+      '</div>';
+    return '<div style="margin:10px 0"><div style="background:#0E1826;border:1px solid #24425F;border-radius:12px 12px 12px 2px;padding:13px 15px;color:#DCE7F0;line-height:1.65;font-size:14px;max-width:88%">' + body + meta + dl + '</div></div>';
+  }).join('');
+  out.scrollTop = out.scrollHeight;
+}
+function newChat() {
+  chatHistory = [];
+  renderChat();
+  document.getElementById('chatQ').value = '';
+}
+async function askChat() {
+  const qEl = document.getElementById('chatQ');
+  const q = qEl.value.trim();
   const btn = document.getElementById('chatBtn');
-  if (!q) { out.innerHTML = '<div style="color:#E5A0A0">Type a question first.</div>'; return; }
+  if (!q) return;
+  chatHistory.push({ role: 'user', content: q });
+  qEl.value = '';
+  renderChat();
   btn.disabled = true; btn.textContent = 'Thinking…';
-  out.innerHTML = '<div style="color:#8A9BAA">Analysing your data…</div>';
+  const apiHistory = chatHistory.slice(0, -1).map(function (m) { return { role: m.role, content: m.content }; });
   try {
     const res = await fetch('/api/chat', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ question: q })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, history: apiHistory })
     });
     const d = await res.json();
     if (!res.ok) {
-      out.innerHTML = '<div style="color:#E5A0A0">'+(d.error||'Something went wrong.')+'</div>';
+      chatHistory.push({ role: 'assistant', content: 'Error: ' + (d.error || 'something went wrong.') });
     } else {
-      const ans = (d.answer||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
-      out.innerHTML =
-        '<div style="background:#0E1826;border:1px solid #24425F;border-radius:10px;padding:14px 16px;color:#DCE7F0;line-height:1.65;font-size:14px">'+ans+'</div>'+
-        '<details style="margin-top:10px;color:#6B8299;font-size:12px"><summary style="cursor:pointer">Show query ('+d.rowCount+' rows)</summary><pre style="white-space:pre-wrap;background:#0A121C;padding:10px;border-radius:8px;margin-top:6px;color:#8FB0C9;overflow-x:auto">'+(d.sql||'').replace(/</g,'&lt;')+'</pre></details>';
+      chatHistory.push({ role: 'assistant', content: d.answer, sql: d.sql, rowCount: d.rowCount });
     }
-  } catch(e) {
-    out.innerHTML = '<div style="color:#E5A0A0">Network error — try again.</div>';
+  } catch (e) {
+    chatHistory.push({ role: 'assistant', content: 'Network error — try again.' });
   } finally {
     btn.disabled = false; btn.textContent = 'Ask';
+    renderChat();
   }
 }
 function showTab(id, el) {
