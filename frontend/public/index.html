@@ -108,6 +108,7 @@ tr.expanded-row td { background: #142030; }
     <div class="nav-item" onclick="showTab('insights',this)">🔬 Insights</div>
     <div class="nav-item" onclick="showTab('apps',this)">📱 Detected Apps</div>
     <div class="nav-item" onclick="showTab('settings',this)">⚙️ Settings</div>
+    <div class="nav-item" onclick="showTab('chat',this)">💬 Ask AI</div>
     <div class="sidebar-stats" id="sidebarStats"></div>
     <div class="log-box">
       <div class="log-hdr"><span class="dot"></span> SYSTEM LOG</div>
@@ -263,6 +264,22 @@ tr.expanded-row td { background: #142030; }
       </div>
     </div>
 
+<div id="tab-chat" style="display:none">
+  <div class="card" style="max-width:760px">
+    <div class="section-title">💬 Ask AI about your DNS data</div>
+    <div style="font-size:12px;color:#8A9BAA;margin:6px 0 14px;line-height:1.6">
+      Ask anything about your logs in plain English — usage, stats, patterns, blocked domains, devices, times of day. Answers are generated live from your data.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="chatPin" type="password" placeholder="PIN" autocomplete="off"
+        style="width:120px;padding:9px 12px;background:#0E1826;border:1px solid #24425F;border-radius:8px;color:#DCE7F0;font-size:14px">
+      <textarea id="chatQ" rows="3" placeholder="e.g. Which sites did my phone visit most at night last week?"
+        style="width:100%;padding:11px 13px;background:#0E1826;border:1px solid #24425F;border-radius:8px;color:#DCE7F0;font-size:14px;resize:vertical;box-sizing:border-box"></textarea>
+      <button class="btn btn-primary" onclick="askChat()" id="chatBtn" style="width:fit-content">Ask</button>
+    </div>
+    <div id="chatOut" style="margin-top:18px"></div>
+  </div>
+</div>
 <div id="tab-settings" style="display:none">
       <h2>Settings</h2>
       <div class="card" style="max-width:500px;margin-bottom:16px">
@@ -717,6 +734,34 @@ function toggleExpand(el, row) {
 
 // ─── TAB NAVIGATION ──────────────────────────────────────────────────────────
 const tabLoaded = {};
+async function askChat() {
+  const pin = document.getElementById('chatPin').value.trim();
+  const q = document.getElementById('chatQ').value.trim();
+  const out = document.getElementById('chatOut');
+  const btn = document.getElementById('chatBtn');
+  if (!q) { out.innerHTML = '<div style="color:#E5A0A0">Type a question first.</div>'; return; }
+  btn.disabled = true; btn.textContent = 'Thinking…';
+  out.innerHTML = '<div style="color:#8A9BAA">Analysing your data…</div>';
+  try {
+    const res = await fetch('/api/chat', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ pin, question: q })
+    });
+    const d = await res.json();
+    if (!res.ok) {
+      out.innerHTML = '<div style="color:#E5A0A0">'+(d.error||'Something went wrong.')+'</div>';
+    } else {
+      const ans = (d.answer||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+      out.innerHTML =
+        '<div style="background:#0E1826;border:1px solid #24425F;border-radius:10px;padding:14px 16px;color:#DCE7F0;line-height:1.65;font-size:14px">'+ans+'</div>'+
+        '<details style="margin-top:10px;color:#6B8299;font-size:12px"><summary style="cursor:pointer">Show query ('+d.rowCount+' rows)</summary><pre style="white-space:pre-wrap;background:#0A121C;padding:10px;border-radius:8px;margin-top:6px;color:#8FB0C9;overflow-x:auto">'+(d.sql||'').replace(/</g,'&lt;')+'</pre></details>';
+    }
+  } catch(e) {
+    out.innerHTML = '<div style="color:#E5A0A0">Network error — try again.</div>';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ask';
+  }
+}
 function showTab(id, el) {
   document.querySelectorAll('[id^="tab-"]').forEach(t=>t.style.display='none');
   document.getElementById('tab-'+id).style.display='';
