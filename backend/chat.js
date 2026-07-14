@@ -88,18 +88,30 @@ async function ask(question) {
   if (!key) throw new Error('No Anthropic API key configured on the server.');
   if (!question || !question.trim()) throw new Error('Empty question.');
 
+  const named = extractDomains(question);
+  const mustQuery = named.length > 0;
+
   let sql = null;
   let rows = [];
   let sqlError = null;
+  let queryRan = false;
 
   try {
-    const sqlSystem = 'You are a SQLite expert. If the question needs data from the logs, respond with ONE SQLite SELECT query and nothing else. If the question is purely about what a site/app is (no data needed), respond with exactly NO_QUERY. Use only this schema:\n\n' + SCHEMA_DESCRIPTION;
+    let sqlSystem = 'You are a SQLite expert. Respond with ONE SQLite SELECT query and nothing else - no explanation, no markdown.';
+    if (mustQuery) {
+      sqlSystem += ' The question mentions specific domain(s): ' + named.join(', ') + '. You MUST write a query that looks up activity for those domains (match on domain or root_domain using LIKE with wildcards), returning visit count, category, service, risk, and first/last seen.';
+    } else {
+      sqlSystem += ' If the question genuinely needs no data from the logs, respond with exactly NO_QUERY.';
+    }
+    sqlSystem += ' Use only this schema:\n\n' + SCHEMA_DESCRIPTION;
+
     const rawSql = await callClaude(key, sqlSystem, [{ role: 'user', content: question }], 400);
     if (rawSql.trim().toUpperCase() !== 'NO_QUERY') {
       sql = sanitiseSql(rawSql);
       const db = new Database(DB_PATH, { readonly: true, fileMustExist: true });
       try {
         rows = db.prepare(sql).all();
+        queryRan = true;
       } finally {
         db.close();
       }
@@ -112,8 +124,7 @@ async function ask(question) {
 
   const research = [];
   if (researchDomain) {
-    const domains = extractDomains(question);
-    for (const d of domains) {
+    for (const d of named) {
       try {
         const info = await researchDomain(d);
         if (info) {
@@ -133,13 +144,19 @@ async function ask(question) {
     "You are a helpful analyst answering questions about the user's DNS activity.",
     'You have THREE sources: (a) query results from their database, (b) your own general knowledge about what websites and apps are, (c) urlscan.io research on specific domains.',
     'Use all three. When you describe what a site or app IS, you may use your own knowledge - but make clear that description is general knowledge, while stats (visit counts, categories, times) come from their actual data.',
+    'CRITICAL: only state that something is absent from their logs if a SQL query actually ran and returned zero rows. If no query ran, say you did not check their data rather than claiming there are no records.',
     'Be concise and specific. Use Australian English. If you are unsure what an obscure domain is, say so rather than guessing.'
   ].join(' ');
 
   const parts = ['Question: ' + question];
   if (sql) parts.push('\nSQL used: ' + sql);
-  if (sqlError) parts.push('\n(No data query was run: ' + sqlError + ')');
-  parts.push('\nDatabase results (JSON, up to 200 rows): ' + JSON.stringify(capped));
+  if (sqlError) parts.push('\n(SQL step failed, no data was checked: ' + sqlError + ')');
+  if (queryRan) {
+    parts.push('\nA query DID run. Database results (JSON, up to 200 rows): ' + JSON.stringify(capped));
+    if (rows.length === 0) parts.push('\nThe query ran and genuinely returned zero rows - it is safe to say there is no matching activity.');
+  } else {
+    parts.push('\nNO query was run against their database - do NOT claim anything is absent from their logs.');
+  }
   if (research.length) parts.push('\nurlscan.io research on named domains: ' + JSON.stringify(research));
 
   const answer = await callClaude(key, explainSystem, [{ role: 'user', content: parts.join('\n') }], 1024);
