@@ -318,5 +318,1055 @@
     "bg": true,
     "source": "claude",
     "researched": "2026-07-15T09:56:28.421Z"
+  },
+  "ca238db5-5c38-419c-874c-f127b3352321.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "UUID-format domain, purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "c843bd2b-37c3-4db3-a1ce-77377866e1de.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "UUID-format domain, purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "cdn-net.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Generic CDN or content delivery service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "dnsdelegation.io": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "DNS delegation or DNS service platform",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "identity.security": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain name suggests identity or security services, purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "veritonicmetrics.com": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Unknown",
+    "purpose": "Metrics and monitoring service",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "oojoovae.org": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "7zd4df.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Obfuscated domain name, purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "datasteam.io": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown, likely misspelled or obfuscated",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.312Z"
+  },
+  "64972607-15d6-4a3a-ab25-d4ea32528cc0.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "UUID-format domain, purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "cvxcloud.com": {
+    "cat": "Productivity / Cloud",
+    "owner": "Unknown",
+    "purpose": "Cloud services platform",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "heapanalytics.com": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Heap Inc.",
+    "purpose": "Session recording and user analytics platform",
+    "data": "Identified by AI classifier",
+    "risk": "H",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "ttdns2.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "DNS or network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "cdn5th.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "suckjerkcock.com": {
+    "cat": "Adult Content",
+    "owner": "Unknown",
+    "purpose": "Adult content site",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "cdnhwcick110.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "nfcube.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "skulibrary.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "techlab-cdn.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "time1.me": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown, possibly time service or generic utility",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "bidence.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "ab1n.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "agego.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "bkcdn.net": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "cfjump.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Purpose unknown",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:18.313Z"
+  },
+  "clrt.ai": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "datacaciques.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "doppiocdn.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "gayporn.com": {
+    "cat": "Adult Content",
+    "owner": "Unknown",
+    "purpose": "Adult content website",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "gayporn.live": {
+    "cat": "Adult Content",
+    "owner": "Unknown",
+    "purpose": "Adult content streaming website",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "onlydudes.com": {
+    "cat": "Adult Content",
+    "owner": "Unknown",
+    "purpose": "Adult content subscription platform",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "pages07.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "powl.io": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "qwapi.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "sunlns.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "trackedweb.net": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Unknown",
+    "purpose": "Web tracking and monitoring service",
+    "data": "Identified by AI classifier",
+    "risk": "H",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "vtwenty.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "inside-graph.com": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Unknown",
+    "purpose": "Graph-based analytics or tracking service",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "adtech.ink": {
+    "cat": "Advertising / Ad Tech",
+    "owner": "Unknown",
+    "purpose": "Advertising technology platform",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "caprofitx.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "cdn-path.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "hs-analytics.net": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Unknown",
+    "purpose": "Web analytics tracking service",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "21d282c8-c639-4675-a621-5b49df52ca40.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "9gtb.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "bykamfod.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "cdn.house": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "cdndex.io": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "cdnhwcchh18.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "chmsrv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "chnsrv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unable to identify with certainty",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:25.348Z"
+  },
+  "com.auundefined": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "company-target.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Cannot determine purpose from domain name alone.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "content-cms.com": {
+    "cat": "Productivity / Cloud",
+    "owner": "Unknown",
+    "purpose": "Appears to be a content management system service.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "elnnap.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "flavedo.io": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "fullstop.ai": {
+    "cat": "AI Services",
+    "owner": "Unknown",
+    "purpose": "AI-related service based on domain extension.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "globalcdn.co": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Content delivery network service.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "goaserv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "hip-97166b.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "hotsoz.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "hprofits.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "igaw.io": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "images-home.com": {
+    "cat": "Media Delivery",
+    "owner": "Unknown",
+    "purpose": "Likely serves images or media content.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "kibibe.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "nmrodam.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "omnisnippet1.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "optvz.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "orbsrv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "ov1o.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "pa-cd.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "pci-bridge.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Infrastructure or payment processing bridge service.",
+    "data": "Identified by AI classifier",
+    "risk": "H",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "prodregistryv2.org": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "pufted.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "realsrv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with unclear purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "rtmark.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Unrecognized domain with no identifiable purpose.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:12:31.699Z"
+  },
+  "searchserverapi1.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "sfnix.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "softali.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "soudgesissially.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "stbuttons.click": {
+    "cat": "Advertising / Ad Tech",
+    "owner": "Unknown",
+    "purpose": "Likely serves ad buttons or advertising content based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "strpst.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "tesorf.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "trackedlink.net": {
+    "cat": "Analytics / Monitoring",
+    "owner": "Unknown",
+    "purpose": "Likely tracks user links and behavior based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "H",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "tsyndicate.com": {
+    "cat": "Advertising / Ad Tech",
+    "owner": "Unknown",
+    "purpose": "Likely related to ad syndication network based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "usco1621-b.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "usemessages.com": {
+    "cat": "Messaging / Communication",
+    "owner": "Unknown",
+    "purpose": "Appears to be a messaging service based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "vdxl.im": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "xansrv.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "xlink3.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "xlviirdr.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.851Z"
+  },
+  "zline0.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "ac1n.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "device9.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "email-messaging.com": {
+    "cat": "Messaging / Communication",
+    "owner": "Unknown",
+    "purpose": "Appears to provide email or messaging services based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "geodns.me": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Likely provides DNS or geographic routing services based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "hgecdn.net": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Likely a content delivery network based on domain name structure.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "partners-show.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "qprod2.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "waas-online.net": {
+    "cat": "Productivity / Cloud",
+    "owner": "Unknown",
+    "purpose": "Likely provides online services, possibly software-as-a-service based on domain name.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "xhcdn.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "Unknown",
+    "purpose": "Likely a content delivery network based on domain name structure.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": true,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:20.852Z"
+  },
+  "evgnet.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:23.555Z"
+  },
+  "goadserver.com": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:23.555Z"
+  },
+  "mobilytixdigital.com": {
+    "cat": "Shopping / Retail",
+    "owner": "Mobilytix",
+    "purpose": "Digital ticketing and event booking platform.",
+    "data": "Identified by AI classifier",
+    "risk": "M",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:23.555Z"
+  },
+  "nsvcs.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:23.555Z"
+  },
+  "xtlo.net": {
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "purpose": "Domain purpose not recognized from available information.",
+    "data": "Identified by AI classifier",
+    "risk": "L",
+    "bg": false,
+    "source": "claude",
+    "researched": "2026-07-15T10:13:23.555Z"
   }
 }

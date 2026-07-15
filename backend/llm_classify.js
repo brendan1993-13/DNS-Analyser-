@@ -64,6 +64,7 @@ async function main() {
   if (!key) { console.error('No anthropicKey in config.json'); process.exit(1); }
 
   const redo = process.argv.indexOf('--redo') !== -1;
+  const thin = process.argv.indexOf('--thin') !== -1;
   const li = process.argv.indexOf('--limit');
   const limit = li !== -1 ? parseInt(process.argv[li + 1]) : 0;
 
@@ -78,7 +79,16 @@ async function main() {
       if (redo && (existing.source === 'urlscan.io' || existing.source === 'unresolved' || existing.cat === 'Unknown')) return true;
       return false;
     }
-    return classify(d).cat === 'Unknown';
+    const info = classify(d);
+    if (info.cat === 'Unknown') return true;
+    if (thin) {
+      // weak entries: no known owner, or a placeholder/generic purpose
+      const p = (info.purpose || '').toLowerCase();
+      if (!info.owner || info.owner === 'Unknown') return true;
+      if (p.indexOf('unclassified') !== -1 || p.indexOf('not in knowledge base') !== -1) return true;
+      if (p.length < 25) return true;
+    }
+    return false;
   });
   if (limit > 0) todo = todo.slice(0, limit);
 

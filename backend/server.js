@@ -281,7 +281,27 @@ app.get('/api/export', (req, res) => {
   // Per-domain summary within the date range
   const _splitList = Array.from(classify.SPLIT_DOMAINS || []).map(d => "'" + d.replace(/'/g,"''") + "'").join(',');
   const _groupExpr = _splitList ? `CASE WHEN domain IN (${_splitList}) THEN domain ELSE root_domain END` : 'root_domain';
-  let domRows = db.prepare(`SELECT ${_groupExpr} as root_domain, COUNT(*) as total_visits, COUNT(DISTINCT substr(timestamp,1,10)) as unique_days, MIN(substr(timestamp,1,10)) as first_seen, MAX(substr(timestamp,1,10)) as last_seen, GROUP_CONCAT(DISTINCT status) as statuses FROM logs ${whereClause} GROUP BY ${_groupExpr} ORDER BY total_visits DESC`).all(dateParams);
+  let domRows = db.prepare(`SELECT ${_groupExpr} as root_domain, COUNT(*) as total_visits, COUNT(DISTINCT substr(timestamp,1,10)) as unique_days, MIN(substr(timestamp,1,10)) as first_seen, MAX(substr(timestamp,1,10)) as last_seen, GROUP_CONCAT(DISTINCT status) as statuses, SUM(CASE WHEN status='blocked' THEN 1 ELSE 0 END) as blocked_count, COUNT(DISTINCT domain) as subdomain_count, GROUP_CONCAT(DISTINCT device_name) as devices, GROUP_CONCAT(DISTINCT destination_country) as countries, MAX(service) as service FROM logs ${whereClause} GROUP BY ${_groupExpr} ORDER BY total_visits DESC`).all(dateParams);
+
+  // --- extra intelligence: peak hour, busiest day, top subdomains, daily series ---
+  const _hourRows = db.prepare(`SELECT ${_groupExpr} as gk, substr(timestamp,12,2) as hr, COUNT(*) n FROM logs ${whereClause} GROUP BY gk, hr`).all(dateParams);
+  const _peakHour = {};
+  _hourRows.forEach(r => {
+    const cur = _peakHour[r.gk];
+    if (!cur || r.n > cur.n) _peakHour[r.gk] = { hr: r.hr, n: r.n };
+  });
+  const _dayRows = db.prepare(`SELECT ${_groupExpr} as gk, substr(timestamp,1,10) as day, COUNT(*) n FROM logs ${whereClause} GROUP BY gk, day ORDER BY day ASC`).all(dateParams);
+  const _busiestDay = {};
+  _dayRows.forEach(r => {
+    const cur = _busiestDay[r.gk];
+    if (!cur || r.n > cur.n) _busiestDay[r.gk] = { day: r.day, n: r.n };
+  });
+  const _subRows = db.prepare(`SELECT ${_groupExpr} as gk, domain, COUNT(*) n FROM logs ${whereClause} GROUP BY gk, domain ORDER BY n DESC`).all(dateParams);
+  const _topSubs = {};
+  _subRows.forEach(r => {
+    if (!_topSubs[r.gk]) _topSubs[r.gk] = [];
+    if (_topSubs[r.gk].length < 3) _topSubs[r.gk].push(r.domain + ' (' + r.n + ')');
+  });
 
   // Build set of domains for the requested service(s) (if any)
   let serviceDomains = null;
@@ -340,15 +360,52 @@ app.get('/api/export', (req, res) => {
   const wb = XLSX.utils.book_new();
 
   // Sheet 1: Domain Intelligence (always included - the rich per-site data)
-  const domHeaders = ['Domain','Category','Owner','Purpose','Data Collected','Privacy Risk','Activity Type','Total Visits','Unique Days','First Seen','Last Seen','Blocked?'];
+  const domHeaders = ['Domain','Service','Category','Owner','Purpose','Data Collected','Privacy Risk','Activity Type','Total Visits','Allowed','Blocked','Unique Days','Avg / Day','Peak Hour (AEST)','Busiest Day','Busiest Day Count','Devices','Countries','Subdomains','Top Subdomains','First Seen','Last Seen'];
   const domData = domRows.map(r => {
     const info = classify(r.root_domain||'');
     const at = SEARCH.has(r.root_domain) ? 'Search' : USER_CATS.has(info.cat) ? 'User-Initiated' : 'Background';
-    return [r.root_domain, info.cat, info.owner, info.purpose, info.data, info.risk==='H'?'High':info.risk==='M'?'Medium':'Low', at, r.total_visits, r.unique_days, r.first_seen, r.last_seen, (r.statuses||'').includes('blocked')?'Yes':'No'];
+    const blocked = r.blocked_count || 0;
+    const allowed = (r.total_visits || 0) - blocked;
+    const avg = r.unique_days ? Math.round((r.total_visits / r.unique_days) * 10) / 10 : 0;
+    const ph = _peakHour[r.root_domain];
+    const peak = ph ? String((parseInt(ph.hr, 10) + 10) % 24).padStart(2, '0') + ':00' : '';
+    const bd = _busiestDay[r.root_domain] || {};
+    return [
+      r.root_domain,
+      r.service || '',
+      info.cat, info.owner, info.purpose, info.data,
+      info.risk==='H'?'High':info.risk==='M'?'Medium':'Low',
+      at,
+      r.total_visits, allowed, blocked,
+      r.unique_days, avg,
+      peak,
+      bd.day || '', bd.n || 0,
+      (r.devices||'').split(',').filter(Boolean).join(', '),
+      (r.countries||'').split(',').filter(Boolean).join(', '),
+      r.subdomain_count || 0,
+      (_topSubs[r.root_domain]||[]).join(' | '),
+      r.first_seen, r.last_seen
+    ];
   });
   const ws1 = XLSX.utils.aoa_to_sheet([domHeaders, ...domData]);
-  ws1['!cols'] = [30,22,26,55,45,10,15,10,10,12,12,8].map(w=>({wch:w}));
+  ws1['!cols'] = [30,20,22,26,60,45,10,15,11,9,9,11,10,15,12,16,26,18,11,50,12,12].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb, ws1, 'Domain Intelligence');
+
+  // Sheet: Daily Activity - one row per domain per day
+  const dailyHeaders = ['Domain','Service','Category','Date','Visits'];
+  const _dailyCap = 60000;
+  const _svcByDom = {};
+  const _catByDom = {};
+  domRows.forEach(d => { _svcByDom[d.root_domain] = d.service || ''; _catByDom[d.root_domain] = classify(d.root_domain||'').cat; });
+  const dailyData = [];
+  for (const r of _dayRows) {
+    if (dailyData.length >= _dailyCap) break;
+    if (!matchingDomains.has(r.gk)) continue;
+    dailyData.push([r.gk, _svcByDom[r.gk] || '', _catByDom[r.gk] || '', r.day, r.n]);
+  }
+  const wsD = XLSX.utils.aoa_to_sheet([dailyHeaders, ...dailyData]);
+  wsD['!cols'] = [30,20,22,12,9].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, wsD, 'Daily Activity');
 
   // Sheet 2: Category Summary (of the filtered set)
   const catMap = {};
