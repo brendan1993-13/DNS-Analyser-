@@ -108,5 +108,15 @@
     "bg": true,
     "source": "virustotal-verified",
     "verifiedAt": "2026-07-13T03:47:18.907Z"
+  },
+  "vercel-dns.com": {
+    "cat": "Infrastructure / CDN",
+    "owner": "AMAZON-02 - Amazon.com, Inc., US",
+    "purpose": "VirusTotal category: Information Technology (alphaMountain.ai), information technology",
+    "data": "Auto-researched via urlscan.io",
+    "risk": "L",
+    "bg": true,
+    "source": "virustotal-verified",
+    "verifiedAt": "2026-07-15T03:08:31.794Z"
   }
 }

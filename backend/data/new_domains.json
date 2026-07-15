@@ -1,5 +1,77 @@
 [
   {
+    "domain": "vercel-dns.com",
+    "firstSeen": "2026-07-15T02:26:57.400Z",
+    "visits": 1,
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "risk": "L",
+    "purpose": "Unclassified domain — not in knowledge base",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.117Z",
+    "reviewed": false
+  },
+  {
+    "domain": "petbarn.com.au",
+    "firstSeen": "2026-07-15T02:26:56.040Z",
+    "visits": 3,
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "risk": "L",
+    "purpose": "Unclassified domain — not in knowledge base",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.117Z",
+    "reviewed": false
+  },
+  {
+    "domain": "p-a.io",
+    "firstSeen": "2026-07-15T02:26:57.934Z",
+    "visits": 1,
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "risk": "L",
+    "purpose": "Unclassified domain — not in knowledge base",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.117Z",
+    "reviewed": false
+  },
+  {
+    "domain": "magentocloud.map.fastly.net",
+    "firstSeen": "2026-07-15T02:26:56.264Z",
+    "visits": 1,
+    "cat": "Infrastructure / CDN",
+    "owner": "Fastly Inc.",
+    "risk": "L",
+    "purpose": "Fastly CDN edge cloud delivery",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.117Z",
+    "reviewed": false
+  },
+  {
+    "domain": "directus.app",
+    "firstSeen": "2026-07-15T02:26:57.214Z",
+    "visits": 1,
+    "cat": "Unknown",
+    "owner": "Unknown",
+    "risk": "L",
+    "purpose": "Unclassified domain — not in knowledge base",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.116Z",
+    "reviewed": false
+  },
+  {
+    "domain": "d2tm5xis9avmw2.cloudfront.net",
+    "firstSeen": "2026-07-15T02:26:58.049Z",
+    "visits": 1,
+    "cat": "Infrastructure / CDN",
+    "owner": "Amazon Web Services",
+    "risk": "L",
+    "purpose": "AWS cloud infrastructure — hosting, CDN, or API gateway",
+    "service": null,
+    "detectedAt": "2026-07-15T02:30:04.116Z",
+    "reviewed": false
+  },
+  {
     "domain": "adswizz.com",
     "firstSeen": "2026-07-13T09:06:24.251Z",
     "visits": 2,

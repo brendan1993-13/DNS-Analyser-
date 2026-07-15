@@ -86,5 +86,13 @@
     "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
     "force": false,
     "at": "2026-07-13T03:47:18.907Z"
+  },
+  {
+    "domain": "vercel-dns.com",
+    "from": "Unknown",
+    "to": "Infrastructure / CDN",
+    "reason": "Low-confidence (urlscan.io) corrected to VirusTotal category",
+    "force": false,
+    "at": "2026-07-15T03:08:31.794Z"
   }
 ]
